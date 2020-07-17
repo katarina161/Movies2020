@@ -1,5 +1,6 @@
 package rs.ac.bg.fon.nprog.Movies.domain;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,19 @@ public class User {
 	 */
 	private String lastName;
 	
+	/**
+	 * pol korisnika
+	 */
+	private String sex;
+	
+	/**
+	 * datum rodjenja korisnika
+	 */
+	private Date birthday;
+	
+	/**
+	 * Neparametrizovani konstruktor klase Korisnik.
+	 */
 	public User() {
 		
 	}
@@ -174,6 +188,51 @@ public class User {
 		this.lastName = lastName;
 	}
 	
+	/**
+	 * Vraca pol korisnika.
+	 * 
+	 * @return pol korinsika.
+	 */
+	public String getSex() {
+		return sex;
+	}
+
+	/**
+	 * Postavlja vrednost atributa pol.
+	 * 
+	 * @param sex Nova vrednost atributa pol.
+	 * 
+	 * @throws java.lang.RuntimeException Ukoliko pol nije ili Muski
+	 * ili Zenski.
+	 */
+	public void setSex(String sex) {
+		if(sex == null || (!sex.equals("Muski") && !sex.equals("Zenski")))
+			throw new RuntimeException("Sex is invalid.");
+		this.sex = sex;
+	}
+	
+	/**
+	 * Vraca datum rodjenja korisnika.
+	 * 
+	 * @return datum rodjenja korisnika.
+	 */
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	/**
+	 * Postavlja vrednost atributa datum rodjenja korisnika.
+	 * 
+	 * @param birthday Nova vrednost atributa datum rodjenja korisnika.
+	 * 
+	 * @throws java.lang.RuntimeException Ukoliko je null vrednost
+	 */
+	public void setBirthday(Date birthday) {
+		if(birthday == null)
+			throw new RuntimeException("Birthday is invalid.");
+		this.birthday = birthday;
+	}
+
 	/**
 	 * Staticka metoda koja proverava da li je korisnicko ime validno.
 	 * 

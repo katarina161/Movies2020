@@ -28,6 +28,8 @@ public class StorageDatabaseUser implements StorageUser {
 			user.setPassword(rs.getString("password"));
 			user.setFirstName(rs.getString("firstname"));
 			user.setLastName(rs.getString("lastname"));
+			user.setSex(rs.getString("sex"));
+			user.setBirthday(rs.getDate("birthday"));
 			
 			rs.close();
 			preparedStatement.close();

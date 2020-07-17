@@ -205,7 +205,38 @@ public class UserTest {
 		
 		assertEquals("Ji-Ho", user.getLastName());
 	}
-
+	
+	//Sex
+	@Test (expected = java.lang.RuntimeException.class)
+	public void testSetSexNull() {
+		user.setSex(null);
+	}
+	
+	@Test (expected = java.lang.RuntimeException.class)
+	public void testSetSex1() {
+		user.setSex("Televizor");
+	}
+	
+	@Test
+	public void testSetSex2() {
+		user.setSex("Muski");
+		
+		assertEquals("Muski", user.getSex());
+	}
+	
+	@Test
+	public void testSetSex3() {
+		user.setSex("Zenski");
+		
+		assertEquals("Zenski", user.getSex());
+	}
+	
+	//Birthady
+	@Test (expected = java.lang.RuntimeException.class)
+	public void testSetBirthadyNull() {
+		user.setBirthday(null);
+	}
+	
 	//Equals
 	@Test
 	public void testEqualsObjectNull() {

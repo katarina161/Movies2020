@@ -100,7 +100,12 @@ public class FLogIn extends JFrame {
 	private JButton getBtnRegister() {
 		if (btnRegister == null) {
 			btnRegister = new JButton("Register");
-			Image img = new ImageIcon(this.getClass().getResource("/activation1.png")).getImage();
+			btnRegister.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					new FRegister().setVisible(true);
+				}
+			});
+			Image img = new ImageIcon(this.getClass().getResource("/icons/activation1.png")).getImage();
 			btnRegister.setIcon(new ImageIcon(img));
 			btnRegister.setFont(new Font("Arial", Font.PLAIN, 25));
 			btnRegister.setBounds(303, 266, 159, 46);
@@ -110,7 +115,7 @@ public class FLogIn extends JFrame {
 	private JButton getBtnLogIn() {
 		if (btnLogIn == null) {
 			btnLogIn = new JButton("Log in");
-			Image img = new ImageIcon(this.getClass().getResource("/login1.png")).getImage();
+			Image img = new ImageIcon(this.getClass().getResource("/icons/login1.png")).getImage();
 			btnLogIn.setIcon(new ImageIcon(img));
 			btnLogIn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -129,7 +134,8 @@ public class FLogIn extends JFrame {
 						dispose();
 						new FMain().setVisible(true);
 					} catch (Exception e) {
-						lblUserErr.setText("No such user. Please try again!");
+						if(!username.isEmpty() && !password.isEmpty())
+							lblUserErr.setText("No such user. Please try again!");
 						txtPassword.setText("");
 						System.out.println(e.getMessage());
 					}
@@ -187,7 +193,7 @@ public class FLogIn extends JFrame {
 		if (lblImage == null) {
 			lblImage = new JLabel("");
 			lblImage.setBounds(37, 60, 256, 308);
-			Image img = new ImageIcon(this.getClass().getResource("/popcorn.png")).getImage();
+			Image img = new ImageIcon(this.getClass().getResource("/icons/popcorn.png")).getImage();
 			lblImage.setIcon(new ImageIcon(img));
 		}
 		return lblImage;
