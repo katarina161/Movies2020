@@ -6,4 +6,6 @@ public interface StorageUser {
 	
 	User login(String username, String password) throws Exception;
 
+	void registrate(User user) throws Exception;
+
 }

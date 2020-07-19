@@ -1,6 +1,5 @@
 package rs.ac.bg.fon.nprog.Movies.domain;
 
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,12 +39,12 @@ public class User {
 	/**
 	 * pol korisnika
 	 */
-	private String sex;
+	private String gender;
 	
 	/**
 	 * datum rodjenja korisnika
 	 */
-	private Date birthday;
+	private String birthday;
 	
 	/**
 	 * Neparametrizovani konstruktor klase Korisnik.
@@ -57,12 +56,15 @@ public class User {
 	/**
 	 * Parametrizovani konstruktor klase Korisnik
 	 */
-	public User(Long id, String username, String password, String firstName, String lastName) {
+	public User(Long id, String username, String password, String firstName, String lastName, String gender,
+			String birthday) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.gender = gender;
+		this.birthday = birthday;
 	}
 
 	/**
@@ -193,22 +195,22 @@ public class User {
 	 * 
 	 * @return pol korinsika.
 	 */
-	public String getSex() {
-		return sex;
+	public String getGender() {
+		return gender;
 	}
 
 	/**
 	 * Postavlja vrednost atributa pol.
 	 * 
-	 * @param sex Nova vrednost atributa pol.
+	 * @param gender Nova vrednost atributa pol.
 	 * 
 	 * @throws java.lang.RuntimeException Ukoliko pol nije ili Muski
 	 * ili Zenski.
 	 */
-	public void setSex(String sex) {
-		if(sex == null || (!sex.equals("Muski") && !sex.equals("Zenski")))
-			throw new RuntimeException("Sex is invalid.");
-		this.sex = sex;
+	public void setGender(String gender) {
+		if(gender == null || (!gender.equals("Male") && !gender.equals("Female")))
+			throw new RuntimeException("Gender is invalid.");
+		this.gender = gender;
 	}
 	
 	/**
@@ -216,7 +218,7 @@ public class User {
 	 * 
 	 * @return datum rodjenja korisnika.
 	 */
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
 
@@ -227,7 +229,7 @@ public class User {
 	 * 
 	 * @throws java.lang.RuntimeException Ukoliko je null vrednost
 	 */
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		if(birthday == null)
 			throw new RuntimeException("Birthday is invalid.");
 		this.birthday = birthday;

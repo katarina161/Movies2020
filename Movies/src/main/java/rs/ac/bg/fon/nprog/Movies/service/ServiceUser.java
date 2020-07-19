@@ -6,4 +6,6 @@ public interface ServiceUser {
 	
 	User login(String username, String password) throws Exception;
 
+	void registrate(User user) throws Exception;
+
 }

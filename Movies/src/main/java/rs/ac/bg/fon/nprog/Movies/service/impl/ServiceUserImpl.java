@@ -18,4 +18,9 @@ public class ServiceUserImpl implements ServiceUser {
 		return storageUser.login(username, password);
 	}
 
+	@Override
+	public void registrate(User user) throws Exception {
+		storageUser.registrate(user);
+	}
+
 }

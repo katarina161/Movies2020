@@ -30,10 +30,14 @@ public class Controller {
 		
 		map.put("currentUser", user);
 	}
+	
+	public void registrate(User user) throws Exception {
+		serviceUser.registrate(user);
+	}
 
 	public Map<String, Object> getMap() {
 		return map;
 	}
-	
+
 
 }
