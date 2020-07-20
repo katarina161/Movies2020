@@ -14,7 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import rs.ac.bg.fon.nprog.Movies.controller.Controller;
@@ -33,6 +35,7 @@ public class FLogIn extends JFrame {
 	private JLabel lblPasswordErr;
 	private JLabel lblUserErr;
 	private JLabel lblImage;
+	private JRootPane rootPane;
 
 	/**
 	 * Create the frame.
@@ -62,6 +65,9 @@ public class FLogIn extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		contentPane.setFocusable(true);
+		
+		rootPane = SwingUtilities.getRootPane(getBtnLogIn());
+		rootPane.setDefaultButton(getBtnLogIn());
 	}
 	
 	private JLabel getLblUsername() {
@@ -102,6 +108,10 @@ public class FLogIn extends JFrame {
 			btnRegister = new JButton("Register");
 			btnRegister.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
+					lblUserErr.setText("");
+					lblUsernameErr.setText("");
+					lblPasswordErr.setText("");
+					
 					new FRegister().setVisible(true);
 				}
 			});

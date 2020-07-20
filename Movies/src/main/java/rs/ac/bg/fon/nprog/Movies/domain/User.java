@@ -55,6 +55,13 @@ public class User {
 	
 	/**
 	 * Parametrizovani konstruktor klase Korisnik
+	 * @param id identifikator filma
+	 * @param username korisnicko ime korisnika
+	 * @param passford sifra korisnika
+	 * @param firstName ime korisnika
+	 * @param lastName prezime korisnika
+	 * @param gender pol korisnika
+	 * @param birthday datum rodjenja korisnika
 	 */
 	public User(Long id, String username, String password, String firstName, String lastName, String gender,
 			String birthday) {

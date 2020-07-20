@@ -20,8 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JRootPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
@@ -58,6 +60,7 @@ public class FRegister extends JDialog {
 	private JLabel lblGenderErr;
 	private JLabel lblDateErr;
 	private JLabel lblError;
+	private JRootPane rootPane;
 
 	/**
 	 * Create the dialog.
@@ -104,6 +107,9 @@ public class FRegister extends JDialog {
 		contentPanel.setFocusable(true);
 		bg.add(getRdbtnMale());
 		bg.add(getRdbtnFemale());
+		
+		rootPane = SwingUtilities.getRootPane(getBtnSubmit());
+		rootPane.setDefaultButton(getBtnSubmit());
 	}
 	private JLabel getLblRegistration() {
 		if (lblRegistration == null) {
