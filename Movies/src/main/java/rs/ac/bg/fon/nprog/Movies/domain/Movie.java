@@ -129,7 +129,7 @@ public class Movie {
 	 */
 	public void setTitle(String title) {
 		if(title == null)
-			throw new RuntimeException("Title can not be null.");
+			throw new RuntimeException("Title cannot be null.");
 		this.title = title;
 	}
 
@@ -232,7 +232,7 @@ public class Movie {
 	 */
 	public void setReviews(int reviews) {
 		if(reviews < 0)
-			throw new RuntimeException("Number of reviews can not be negative.");
+			throw new RuntimeException("Number of reviews cannot be negative.");
 		this.reviews = reviews;
 	}
 

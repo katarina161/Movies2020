@@ -10,6 +10,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -61,6 +63,7 @@ public class FRegister extends JDialog {
 	private JLabel lblDateErr;
 	private JLabel lblError;
 	private JRootPane rootPane;
+	private DateFormat df;
 
 	/**
 	 * Create the dialog.
@@ -98,6 +101,7 @@ public class FRegister extends JDialog {
 		contentPanel.add(getLblDateErr());
 		contentPanel.add(getLblError());
 		bg = new ButtonGroup();
+		df = new SimpleDateFormat("dd-MM-yyyy");
 		prepareForm();
 	}
 
@@ -261,7 +265,7 @@ public class FRegister extends JDialog {
 			lblPasswordErr = new JLabel("");
 			lblPasswordErr.setForeground(Color.RED);
 			lblPasswordErr.setFont(new Font("Arial", Font.PLAIN, 15));
-			lblPasswordErr.setBounds(152, 376, 287, 16);
+			lblPasswordErr.setBounds(152, 364, 287, 34);
 		}
 		return lblPasswordErr;
 	}
@@ -269,7 +273,7 @@ public class FRegister extends JDialog {
 		if (lblPassword == null) {
 			lblPassword = new JLabel("Password:");
 			lblPassword.setFont(new Font("Arial", Font.PLAIN, 20));
-			lblPassword.setBounds(29, 394, 113, 31);
+			lblPassword.setBounds(29, 398, 113, 31);
 		}
 		return lblPassword;
 	}
@@ -288,7 +292,7 @@ public class FRegister extends JDialog {
 						lblPasswordErr.setText("Please enter your password.");
 				}
 			});
-			txtPassword.setBounds(152, 399, 287, 25);
+			txtPassword.setBounds(152, 403, 287, 25);
 		}
 		return txtPassword;
 	}
@@ -383,59 +387,29 @@ public class FRegister extends JDialog {
 					String lastName = txtLastName.getText();
 					String username = txtUsername.getText();
 					String password = String.valueOf(txtPassword.getPassword());
-					String gender = null;
-					String birthday = null;
+					String gender = (!rdbtnFemale.isSelected() && !rdbtnMale.isSelected()) ? null : bg.getSelection().getActionCommand();
+					String birthday = (dateChooser.getDate() != null) ? df.format(dateChooser.getDate()) : null;
 					
-					if(firstName.isEmpty() || firstName.equals("First name...")) {
-						lblFirstNameErr.setText("Please enter your first name.");
-						firstName = null;
+					User user = new User();
+					Map<String, String> messages = setUser(user, username, password, firstName, lastName, gender, birthday);
+					lblFirstNameErr.setText(messages.get("firstNameErr"));
+					lblLastNameErr.setText(messages.get("lastNameErr"));
+					lblUsernameErr.setText(messages.get("usernameErr"));
+					lblPasswordErr.setText(messages.get("passwordErr"));
+					lblGenderErr.setText(messages.get("genderErr"));
+					lblDateErr.setText(messages.get("birthdayErr"));
+					
+					if(messages.get("errors").equals("0")) {
+						try {
+							Controller.getInstance().registrate(user);
+							JOptionPane.showMessageDialog(null, "Registration successful!");
+							dispose();
+						} catch (Exception e2) {
+							if(e2.getMessage().equals("That username is already taken."))
+								lblUsernameErr.setText("That username is already taken.");
+							System.out.println(e2.getMessage());
+						}
 					}
-					
-					if(lastName.isEmpty() || lastName.equals("Last name...")) {
-						lblLastNameErr.setText("Please enter your last name.");
-						lastName = null;
-					}
-					
-					if(username.isEmpty() || username.equals("Username...")) {
-						lblUsernameErr.setText("Please enter your username.");
-						username = null;
-					}
-					
-					if(password.isEmpty()) {
-						lblPasswordErr.setText("Please enter your password.");
-						password = null;
-					}
-					
-					if(!rdbtnFemale.isSelected() && !rdbtnMale.isSelected())
-						lblGenderErr.setText("Please select your gender.");
-					else {
-						gender = bg.getSelection().getActionCommand();
-					}
-					
-					if(dateChooser.getDate() == null)
-						lblDateErr.setText("Please choose your birthday");
-					else {
-						lblDateErr.setText("");
-						DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-						birthday = df.format(dateChooser.getDate());
-					}
-					
-					try {
-						User user = new User();
-						user.setUsername(username);
-						user.setPassword(password);
-						user.setFirstName(firstName);
-						user.setLastName(lastName);
-						user.setGender(gender);
-						user.setBirthday(birthday);
-						Controller.getInstance().registrate(user);
-						JOptionPane.showMessageDialog(null, "Registration successful!");
-						dispose();
-					} catch (Exception e2) {
-						messages(e2.getMessage());
-						System.out.println(e2.getMessage());
-					}
-					
 				}
 			});
 			btnSubmit.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -462,25 +436,6 @@ public class FRegister extends JDialog {
 		return lblDateErr;
 	}
 	
-	public void messages(String message) {
-		switch (message) {
-		case "Username is invalid.":
-			if(lblUsernameErr.getText().isEmpty())
-				lblUsernameErr.setText("<html>Only letters, numbers and _ are allowed.<br/>It must starts with a letter</html>");
-		case "Password is invalid.":
-			if(lblPasswordErr.getText().isEmpty())
-				lblPasswordErr.setText("Required: uppercase, lowercase, number, special char");
-		case "First name is invalid.":
-			if(lblFirstNameErr.getText().isEmpty())
-				lblFirstNameErr.setText("<html>Only letters are allowed.<br/>It must starts with upper letter.</html>");
-		case "Last name is invalid.":
-			if(lblLastNameErr.getText().isEmpty())
-				lblLastNameErr.setText("<html>Only letters, space, ' and - are allowed<br/>It must starts with upper letter.</html>");
-			break;
-		case "That username is already taken.":
-			lblUsernameErr.setText("That username is already taken.");
-		}
-	}
 	private JLabel getLblError() {
 		if (lblError == null) {
 			lblError = new JLabel("");
@@ -489,5 +444,110 @@ public class FRegister extends JDialog {
 			lblError.setBounds(29, 586, 410, 25);
 		}
 		return lblError;
+	}
+	
+	
+	/**
+	 * Metoda postavlja vrednosti atributa objekta klase Korisnik na osnovu unetih vrednosti i
+	 * vraca mapu poruka koje se ispisuju u slucaju neodgovarajucih vrednosti.
+	 * @param user objekat klase Korisnik
+	 * @param username korisnicko ime koje je uneo korisnik
+	 * @param password sifra koju je uneo korisnik
+	 * @param firstName ime koje je uneo korisnik
+	 * @param lastName prezime koje je uneo korisnik
+	 * @param gender pol koji je selektovao korisnik
+	 * @param birthday datum rodjenja koji je izabrao korisnik
+	 * 
+	 * @return mapu poruka o eventualnim greskama
+	 */
+	public static Map<String, String> setUser(User user, String username, String password, 
+			String firstName, String lastName, String gender, String birthday) {
+		Map<String, String> messages = new HashMap<String, String>();
+		int errors = 0;
+		
+		messages.put("firstNameErr", "");
+		messages.put("lastNameErr", "");
+		messages.put("usernameErr", "");
+		messages.put("passwordErr", "");
+		messages.put("genderErr", "");
+		messages.put("birthdayErr", "");
+		messages.put("firstNameErr", "");
+		
+		if(firstName.isEmpty() || firstName.equals("First name...")) {
+			messages.put("firstNameErr", "Please enter your first name.");
+			errors++;
+		}
+		else {
+			try {
+				user.setFirstName(firstName);
+			} catch (Exception e) {
+				messages.put("firstNameErr", "<html>Only letters are allowed.<br/>It must starts with upper letter.</html>");
+				errors++;
+			}
+		}
+		
+		
+		if(lastName.isEmpty() || lastName.equals("Last name...")) {
+			messages.put("lastNameErr", "Please enter your last name.");
+			errors++;
+		} else {
+			try {
+				user.setLastName(lastName);
+			} catch (Exception e) {
+				messages.put("lastNameErr",
+						"<html>Only letters, space, ' and - are allowed<br/>It must starts with upper letter.</html>");
+				errors++;
+			}
+		}
+		
+		if(username.isEmpty() || username.equals("Username...")) {
+			messages.put("usernameErr", "Please enter your username.");
+			errors++;
+		} else if(username.length() < 6) {
+			messages.put("usernameErr", "Too short! Minimum 6 characters.");
+		} else if(username.length() > 20) {
+			messages.put("usernameErr", "Too long! Maximum 20 characters.");
+		} else {
+			try {
+				user.setUsername(username);
+			} catch (Exception e) {
+				messages.put("usernameErr",
+						"<html>Only letters, numbers and _ are allowed.<br/>It must starts with a letter</html>");
+				errors++;
+			}
+		}
+		
+		if(password.isEmpty()) {
+			messages.put("passwordErr", "Please enter your password.");
+			errors++;
+		} else if(password.length() < 8) {
+			messages.put("passwordErr", "Too short! Minimum 8 characters.");
+		} else if(password.length() > 20) {
+			messages.put("passwordErr", "Too long! Maximum 20 characters.");
+		} else {
+			try {
+				user.setPassword(password);
+			} catch (Exception e) {
+				messages.put("passwordErr",
+						"<html>Required: uppercase, lowercase,<br/> number, special char</html>");
+				errors++;
+			}
+		}
+		
+		if(gender == null) {
+			messages.put("genderErr", "Please select your gender.");
+			errors++;
+		} else
+			user.setGender(gender);
+		
+		if(birthday == null) {
+			messages.put("birthdayErr", "Please choose your birthday");
+			errors++;
+		} else
+			user.setBirthday(birthday);
+		
+		messages.put("errors", String.valueOf(errors));
+		return messages;
+		
 	}
 }
