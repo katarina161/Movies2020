@@ -79,8 +79,13 @@ public class StorageDatabaseUser implements StorageUser {
 		ResultSet rs = preparedStatement.executeQuery();
 		
 		if(rs.next()) {
+			rs.close();
+			preparedStatement.close();
 			return true;
 		}
+		
+		rs.close();
+		preparedStatement.close();
 		return false;
 	}
 
