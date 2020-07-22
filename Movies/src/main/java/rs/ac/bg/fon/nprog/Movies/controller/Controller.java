@@ -7,8 +7,10 @@ import java.util.Map;
 import rs.ac.bg.fon.nprog.Movies.domain.Genre;
 import rs.ac.bg.fon.nprog.Movies.domain.Movie;
 import rs.ac.bg.fon.nprog.Movies.domain.User;
+import rs.ac.bg.fon.nprog.Movies.service.ServiceGenre;
 import rs.ac.bg.fon.nprog.Movies.service.ServiceMovie;
 import rs.ac.bg.fon.nprog.Movies.service.ServiceUser;
+import rs.ac.bg.fon.nprog.Movies.service.impl.ServiceGenreImpl;
 import rs.ac.bg.fon.nprog.Movies.service.impl.ServiceMovieImpl;
 import rs.ac.bg.fon.nprog.Movies.service.impl.ServiceUserImpl;
 
@@ -17,11 +19,13 @@ public class Controller {
 	private static Controller instance;
 	private final ServiceUser serviceUser;
 	private final ServiceMovie serviceMovie;
+	private final ServiceGenre serviceGenre;
 	private final Map<String, Object> map;
 	
 	private Controller() {
 		serviceUser = new ServiceUserImpl();
 		serviceMovie = new ServiceMovieImpl();
+		serviceGenre = new ServiceGenreImpl();
 		map = new HashMap<>();
 	}
 	
@@ -52,6 +56,10 @@ public class Controller {
 
 	public List<Genre> findMovieGenres(Long id) throws Exception{
 		return serviceMovie.findGenres(id);
+	}
+
+	public List<Genre> getAllGenres() throws Exception {
+		return serviceGenre.getAll();
 	}
 
 
