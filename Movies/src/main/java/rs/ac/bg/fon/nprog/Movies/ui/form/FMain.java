@@ -5,18 +5,24 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import rs.ac.bg.fon.nprog.Movies.controller.Controller;
@@ -27,7 +33,7 @@ import rs.ac.bg.fon.nprog.Movies.ui.component.table.model.MovieTableModel;
 
 @SuppressWarnings("serial")
 public class FMain extends JFrame {
-
+	
 	private JPanel contentPane;
 	private JPanel sidePane;
 	private JTable jtblMovies;
@@ -39,6 +45,7 @@ public class FMain extends JFrame {
 	private boolean testActionListener;
 	private JButton btnAllMovies;
 	private User currentUser;
+	private JLabel lblLogOut;
 
 	/**
 	 * Create the frame.
@@ -47,20 +54,22 @@ public class FMain extends JFrame {
 		currentUser = (User) Controller.getInstance().getMap().get("currentUser");
 		setTitle(currentUser.getUsername());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 830, 433);
+		setBounds(100, 100, 890, 433);
 		contentPane = new JPanel();
 		sidePane = new JPanel();
-		sidePane.setPreferredSize(new Dimension(180, 433));
+		sidePane.setPreferredSize(new Dimension(300, 433));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getScrollPane(), BorderLayout.CENTER);
 		contentPane.add(sidePane, BorderLayout.EAST);
+		contentPane.add(getLblLogOut(), BorderLayout.SOUTH);
 		sidePane.setLayout(null);
-		sidePane.add(getBtnDetails());
-		sidePane.add(getCbGenres());
 		sidePane.add(getLblGenre());
+		sidePane.add(getCbGenres());
 		sidePane.add(getBtnAllMovies());
+		sidePane.add(getBtnDetails());
+//		sidePane.add(getLblLogOut());
 		
 		setLocationRelativeTo(null);
 		movies = new ArrayList<Movie>();
@@ -115,10 +124,22 @@ public class FMain extends JFrame {
 	private Component getBtnDetails() {
 		if(btnDetails == null) {
 			btnDetails = new JButton();
+			btnDetails.setBounds(35, 111, 253, 31);
+			btnDetails.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int selectedRow = jtblMovies.getSelectedRow();
+					if(selectedRow == -1) {
+						JOptionPane.showMessageDialog(null, "Please select a movie.");
+					} else {
+						MovieTableModel tm = (MovieTableModel) jtblMovies.getModel();
+						Movie movie = tm.getMovie(selectedRow);
+						new FMovie(movie).setVisible(true);
+					}
+				}
+			});
 			btnDetails.setBackground(new Color(244, 37, 37));
 			btnDetails.setForeground(new Color(255, 255, 255));
 			btnDetails.setToolTipText("Select a movie and click here to see details");
-			btnDetails.setBounds(35, 174, 116, 31);
 			btnDetails.setFont(new Font("Arial", Font.PLAIN, 18));
 			btnDetails.setText("Details");
 		}
@@ -128,6 +149,7 @@ public class FMain extends JFrame {
 	private JComboBox<Genre> getCbGenres() {
 		if (cbGenres == null) {
 			cbGenres = new JComboBox<Genre>();
+			cbGenres.setBounds(35, 49, 116, 31);
 			cbGenres.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(testActionListener)
@@ -136,7 +158,6 @@ public class FMain extends JFrame {
 			});
 			cbGenres.setBackground(new Color(255, 255, 255));
 			cbGenres.setFont(new Font("Arial", Font.PLAIN, 17));
-			cbGenres.setBounds(35, 49, 116, 31);
 			
 		}
 		return cbGenres;
@@ -144,14 +165,15 @@ public class FMain extends JFrame {
 	private JLabel getLblGenre() {
 		if (lblGenre == null) {
 			lblGenre = new JLabel("Genre:");
-			lblGenre.setFont(new Font("Arial", Font.PLAIN, 17));
 			lblGenre.setBounds(35, 13, 79, 23);
+			lblGenre.setFont(new Font("Arial", Font.PLAIN, 17));
 		}
 		return lblGenre;
 	}
 	private JButton getBtnAllMovies() {
 		if (btnAllMovies == null) {
 			btnAllMovies = new JButton();
+			btnAllMovies.setBounds(172, 49, 116, 31);
 			btnAllMovies.setBackground(new Color(32, 136, 203));
 			btnAllMovies.setForeground(new Color(255, 255, 255));
 			btnAllMovies.addActionListener(new ActionListener() {
@@ -165,10 +187,33 @@ public class FMain extends JFrame {
 			});
 			btnAllMovies.setText("All Movies");
 			btnAllMovies.setFont(new Font("Arial", Font.PLAIN, 18));
-			btnAllMovies.setBounds(35, 112, 116, 31);
 		}
 		return btnAllMovies;
 	}
+	
+	private JLabel getLblLogOut() {
+		if (lblLogOut == null) {
+			lblLogOut = new JLabel("", JLabel.RIGHT);
+			lblLogOut.setBounds(252, 327, 36, 36);
+			lblLogOut.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+			lblLogOut.setVerticalTextPosition(SwingConstants.BOTTOM);
+			lblLogOut.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					dispose();
+					Controller.getInstance().getMap().put("currentUser", null);
+					new FLogIn().setVisible(true);
+				}
+			});
+			lblLogOut.setToolTipText("Log Out");
+			Image img = new ImageIcon(this.getClass().getResource("/icons/logout1.png")).getImage();
+			lblLogOut.setIcon(new ImageIcon(img));
+		}
+		return lblLogOut;
+	}
+	
+	
+	
 	
 	/**
 	 * Metoda koja popunjava tabelu svim filmovima iz baze ili filmovima odredjenog zanra, 
