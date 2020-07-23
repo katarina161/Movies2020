@@ -505,8 +505,10 @@ public class FRegister extends JDialog {
 			errors++;
 		} else if(username.length() < 6) {
 			messages.put("usernameErr", "Too short! Minimum 6 characters.");
+			errors++;
 		} else if(username.length() > 20) {
 			messages.put("usernameErr", "Too long! Maximum 20 characters.");
+			errors++;
 		} else {
 			try {
 				user.setUsername(username);
@@ -522,8 +524,10 @@ public class FRegister extends JDialog {
 			errors++;
 		} else if(password.length() < 8) {
 			messages.put("passwordErr", "Too short! Minimum 8 characters.");
+			errors++;
 		} else if(password.length() > 20) {
 			messages.put("passwordErr", "Too long! Maximum 20 characters.");
+			errors++;
 		} else {
 			try {
 				user.setPassword(password);
