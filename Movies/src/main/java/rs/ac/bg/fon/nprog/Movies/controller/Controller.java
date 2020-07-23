@@ -55,11 +55,15 @@ public class Controller {
 	}
 
 	public List<Genre> findMovieGenres(Long id) throws Exception{
-		return serviceMovie.findGenres(id);
+		return serviceGenre.findGenres(id);
 	}
 
 	public List<Genre> getAllGenres() throws Exception {
 		return serviceGenre.getAll();
+	}
+
+	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception{
+		return serviceMovie.getSpecificGenre(searchGenre);
 	}
 
 

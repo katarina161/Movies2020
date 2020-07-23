@@ -22,8 +22,8 @@ public class ServiceMovieImpl implements ServiceMovie{
 	}
 
 	@Override
-	public List<Genre> findGenres(Long id) throws Exception {
-		return storageMovie.findGenres(id);
+	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception {
+		return storageMovie.getSpecificGenre(searchGenre);
 	}
 
 }

@@ -9,6 +9,6 @@ public interface StorageMovie {
 	
 	List<Movie> getAll() throws Exception;
 
-	List<Genre> findGenres(Long id) throws Exception;
+	List<Movie> getSpecificGenre(Genre searchGenre) throws Exception;
 
 }

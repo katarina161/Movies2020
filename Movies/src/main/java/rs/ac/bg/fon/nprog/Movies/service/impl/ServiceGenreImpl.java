@@ -20,4 +20,8 @@ public class ServiceGenreImpl implements ServiceGenre{
 		return storageGenre.getAll();
 	}
 
+	@Override
+	public List<Genre> findGenres(Long id) throws Exception {
+		return storageGenre.findGenres(id);
+	}
 }

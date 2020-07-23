@@ -9,6 +9,6 @@ public interface ServiceMovie {
 	
 	public List<Movie> getAll() throws Exception;
 
-	public List<Genre> findGenres(Long id) throws Exception;
+	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception;
 
 }

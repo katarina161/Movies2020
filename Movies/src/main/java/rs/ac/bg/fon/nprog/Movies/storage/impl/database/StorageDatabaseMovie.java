@@ -57,39 +57,49 @@ public class StorageDatabaseMovie implements StorageMovie{
 		return movies;
 	}
 
+
 	@Override
-	public List<Genre> findGenres(Long movieId) throws Exception {
-		List<Genre> genres =  new ArrayList<>();
+	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception {
+		List<Movie> movies = new ArrayList<>();
 		
 		try {
 			Connection connection = ConnectionFactory.getInstance().getConnection();
-			String query = "SELECT id,name FROM genre WHERE id IN (SELECT genre_id FROM movie_genre WHERE movie_id=?)";
+			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
+					+ "WHERE id IN (SELECT movie_id FROM movie_genre WHERE genre_id=?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setLong(1, movieId);
+			preparedStatement.setLong(1, searchGenre.getId());
 			
 			ResultSet rs = preparedStatement.executeQuery();
 			while(rs.next()) {
 				Long id = rs.getLong("id");
-				String name = rs.getString("name");
+				String title  = rs.getString("title");
+				int year = rs.getInt("year");
+				int duration = rs.getInt("duration");
+				double rating = rs.getDouble("rating");
+				int reviews = rs.getInt("reviews");
+				String image = rs.getString("image");
 				
-				Genre genre = new Genre();
-				genre.setId(id);
-				genre.setName(name);
+				Movie movie = new Movie();
+				movie.setId(id);
+				movie.setTitle(title);
+				movie.setYear(year);
+				movie.setDuration(duration);
+				movie.setRating(rating);
+				movie.setReviews(reviews);
+				movie.setImage(image);
 				
-				genres.add(genre);
+				movies.add(movie);
 			}
 			
 			rs.close();
 			preparedStatement.close();
 			
-			return genres;
-			
+			return movies;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-		return genres;
+		return movies;
 	}
 
 }
