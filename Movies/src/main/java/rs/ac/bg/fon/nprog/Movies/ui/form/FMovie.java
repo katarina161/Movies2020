@@ -37,9 +37,10 @@ public class FMovie extends JFrame {
 		setTitle(movie.getTitle() +" (" +movie.getYear() +")");
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 931, 661);
+		setBounds(100, 100, 841, 661);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(240, 240, 240));
+//		contentPane.setBackground(new Color(240, 240, 240));
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -60,11 +61,12 @@ public class FMovie extends JFrame {
 		if (lblTitle == null) {
 			lblTitle = new JLabel("", SwingConstants.CENTER);
 			lblTitle.setOpaque(true);
-			lblTitle.setBackground(new Color(32, 136, 203));
+//			lblTitle.setBackground(new Color(32, 136, 203));
+			lblTitle.setBackground(new Color(244, 37, 37));
 			lblTitle.setForeground(new Color(255, 255, 255));
 			lblTitle.setText(movie.getTitle());
 			lblTitle.setFont(new Font("Castellar", Font.BOLD, 40));
-			lblTitle.setBounds(12, 13, 887, 64);
+			lblTitle.setBounds(0, 13, 835, 64);
 		}
 		return lblTitle;
 	}
@@ -72,11 +74,16 @@ public class FMovie extends JFrame {
 		if (lblCoverImage == null) {
 			lblCoverImage = new JLabel("");
 			lblCoverImage.setHorizontalAlignment(SwingConstants.CENTER);
-			Border pictureBorder = BorderFactory.createRaisedBevelBorder();
-			Image img = new ImageIcon(this.getClass().getResource("/covers/" +movie.getImage())).getImage().getScaledInstance(330, 435, Image.SCALE_DEFAULT);
+			Image img = new ImageIcon(this.getClass().getResource("/covers/" +movie.getImage())).getImage().getScaledInstance(310, 440, Image.SCALE_DEFAULT);
 			lblCoverImage.setIcon(new ImageIcon(img));
-			lblCoverImage.setBounds(39, 123, 370, 480);
-			lblCoverImage.setBorder(pictureBorder);
+			lblCoverImage.setBounds(39, 100, 360, 480);
+//			Border pictureBorder = BorderFactory.createRaisedBevelBorder();
+//			lblCoverImage.setBorder(pictureBorder);
+			Border redline = BorderFactory.createLineBorder(new Color(244, 37, 37), 5);
+			Border blueline = BorderFactory.createLineBorder(new Color(32, 136, 203), 5);
+			Border compound = BorderFactory.createCompoundBorder(blueline, redline);
+			lblCoverImage.setBorder(compound);
+			
 		}
 		return lblCoverImage;
 	}
