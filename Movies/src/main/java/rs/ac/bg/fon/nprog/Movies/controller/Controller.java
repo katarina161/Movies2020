@@ -66,5 +66,29 @@ public class Controller {
 		return serviceMovie.getSpecificGenre(searchGenre);
 	}
 
+	public void saveUserRating(Movie movie, int userRating) throws Exception {
+		if(movie == null)
+			throw new RuntimeException("That movie does not exist!");
+		if(userRating == 0) {
+			throw new RuntimeException("The rating must be a number between 1 and 10");
+		}
+		User user = (User)map.get("currentUser");
+		serviceMovie.saveUserRating(user, movie, userRating);
+	}
+
+	public void deleteUserRating(Movie movie) throws Exception{
+		if(movie == null)
+			throw new RuntimeException("Rating for this movie does not exist!");
+		User user = (User)map.get("currentUser");
+		serviceMovie.deleteUserRating(user, movie);
+	}
+
+	public int getUserRating(Movie movie) throws Exception{
+		if(movie == null)
+			throw new RuntimeException("Rating for this movie does not exist!");
+		User user = (User)map.get("currentUser");
+		return serviceMovie.getUserRating(user, movie);
+	}
+
 
 }

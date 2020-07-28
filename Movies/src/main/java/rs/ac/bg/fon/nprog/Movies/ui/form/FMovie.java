@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import rs.ac.bg.fon.nprog.Movies.controller.Controller;
 import rs.ac.bg.fon.nprog.Movies.domain.Movie;
 
 @SuppressWarnings("serial")
@@ -25,9 +26,10 @@ public class FMovie extends JFrame {
 	final Image goldStar = new ImageIcon(this.getClass().getResource("/icons/goldStar1.png")).getImage();
 	final Image userBlackStar = new ImageIcon(this.getClass().getResource("/icons/userBlackStar.png")).getImage();
 	final Image userGoldStar = new ImageIcon(this.getClass().getResource("/icons/userGoldStar.png")).getImage();
+	final Image cancel = new ImageIcon(this.getClass().getResource("/icons/cancel.png")).getImage();
 	
 	private Movie movie;
-	private int userRating = 0;
+	private int userRating;
 	
 	private JPanel contentPane;
 	private JLabel lblTitle;
@@ -58,20 +60,28 @@ public class FMovie extends JFrame {
 	private JLabel lblRating;
 	private JLabel lblReviews;
 	private JLabel label_1;
+	private JLabel lblCancel;
 	/**
 	 * Create the frame.
 	 */
 	public FMovie(Movie movie) {
 		this.movie = movie;
+		try {
+			userRating = Controller.getInstance().getUserRating(movie);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
 		setTitle(movie.getTitle() +" (" +movie.getYear() +")");
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 841, 661);
+		setBounds(100, 100, 854, 661);
 		contentPane = new JPanel();
 		separator = new JSeparator();
+		separator.setForeground(Color.GRAY);
 		separator.setSize(1, 50);
-		separator.setLocation(540, 469);
-		separator.setBackground(Color.LIGHT_GRAY);
+		separator.setLocation(545, 469);
+		separator.setBackground(Color.WHITE);
 		separator.setOrientation(SwingConstants.VERTICAL);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -104,11 +114,8 @@ public class FMovie extends JFrame {
 		contentPane.add(getLblRating());
 		contentPane.add(getLblReviews());
 		contentPane.add(getLabel_1());
+		contentPane.add(getLblCancel());
 		fillStars();
-		
-//		for (JLabel jLabel : stars) {
-//			jLabel.setIcon(new ImageIcon(blackStar));
-//		}
 		
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -122,7 +129,7 @@ public class FMovie extends JFrame {
 			lblTitle.setForeground(new Color(255, 255, 255));
 			lblTitle.setText(movie.getTitle());
 			lblTitle.setFont(new Font("Castellar", Font.BOLD, 40));
-			lblTitle.setBounds(0, 13, 835, 64);
+			lblTitle.setBounds(0, 13, 848, 64);
 		}
 		return lblTitle;
 	}
@@ -217,10 +224,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(1);
+					lblUserRating.setText("1");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 1;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -234,10 +252,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(2);
+					lblUserRating.setText("2");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 2;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -251,10 +280,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(3);
+					lblUserRating.setText("3");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 3;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -268,10 +308,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(4);
+					lblUserRating.setText("4");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 4;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -285,10 +336,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(5);
+					lblUserRating.setText("5");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 5;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -302,10 +364,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(6);
+					lblUserRating.setText("6");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 6;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -319,10 +392,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(7);
+					lblUserRating.setText("7");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 7;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -336,10 +420,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(8);
+					lblUserRating.setText("8");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 8;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -353,10 +448,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(9);
+					lblUserRating.setText("9");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 9;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -370,10 +476,21 @@ public class FMovie extends JFrame {
 				@Override
 				public void mouseEntered(MouseEvent e) {
 					colorStarsGold(10);
+					lblUserRating.setText("10");
+					lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
 					colorStarsBlack();
+				}
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 10;
+					try {
+						Controller.getInstance().saveUserRating(movie, userRating);
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
 				}
 			});
 		}
@@ -406,11 +523,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblUserRatingStar() {
 		if (lblUserRatingStar == null) {
 			lblUserRatingStar = new JLabel("");
-			if(userRating > 0) {
-				lblUserRatingStar.setIcon(new ImageIcon(userGoldStar));
-			} else {
-				lblUserRatingStar.setIcon(new ImageIcon(userBlackStar));
-			}
+			colorUserRatingStar();
 			lblUserRatingStar.setBounds(455, 469, 36, 36);
 		}
 		return lblUserRatingStar;
@@ -418,13 +531,8 @@ public class FMovie extends JFrame {
 	private JLabel getLblUserRating() {
 		if (lblUserRating == null) {
 			lblUserRating = new JLabel("");
-			if(userRating > 0) {
-				lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
-				lblUserRating.setText(String.valueOf(userRating));
-			} else {
-				lblUserRating.setFont(new Font("Arial", Font.PLAIN, 15));
-				lblUserRating.setText("<html>Rate<br/>This</html>");
-			}
+			lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
+			fillUserRatingLabel();
 			lblUserRating.setHorizontalAlignment(SwingConstants.LEFT);
 			lblUserRating.setBounds(498, 469, 36, 32);
 		}
@@ -446,12 +554,11 @@ public class FMovie extends JFrame {
 			panel.setBackground(Color.WHITE);
 			panel.addMouseListener(new MouseAdapter() {
 				@Override
-				public void mouseEntered(MouseEvent e) {
-					
-				}
-				@Override
 				public void mouseExited(MouseEvent e) {
 					fillStars();
+					lblUserRating.setText(String.valueOf(userRating));
+					colorUserRatingStar();
+					fillUserRatingLabel();
 				}
 			});
 			panel.setBounds(447, 420, 344, 40);
@@ -475,24 +582,69 @@ public class FMovie extends JFrame {
 			lblRating.setText(String.valueOf(movie.getRating()));
 			lblRating.setHorizontalAlignment(SwingConstants.RIGHT);
 			lblRating.setFont(new Font("Arial", Font.PLAIN, 30));
-			lblRating.setBounds(562, 473, 46, 33);
+			lblRating.setBounds(564, 469, 46, 33);
 		}
 		return lblRating;
 	}
 	private JLabel getLblReviews() {
 		if (lblReviews == null) {
 			lblReviews = new JLabel("");
+			lblReviews.setForeground(Color.GRAY);
+			lblReviews.setFont(new Font("Arial", Font.PLAIN, 15));
 			lblReviews.setText(String.valueOf(movie.getReviews()));
-			lblReviews.setBounds(562, 510, 74, 16);
+			lblReviews.setBounds(572, 501, 74, 16);
 		}
 		return lblReviews;
 	}
 	private JLabel getLabel_1() {
 		if (label_1 == null) {
 			label_1 = new JLabel("/10");
+			label_1.setForeground(Color.GRAY);
 			label_1.setFont(new Font("Arial", Font.PLAIN, 15));
-			label_1.setBounds(611, 489, 28, 16);
+			label_1.setBounds(613, 485, 28, 16);
 		}
 		return label_1;
+	}
+	
+	public void colorUserRatingStar() {
+		if(userRating > 0) {
+			lblUserRatingStar.setIcon(new ImageIcon(userGoldStar));
+		} else {
+			lblUserRatingStar.setIcon(new ImageIcon(userBlackStar));
+		}
+	}
+	
+	public void fillUserRatingLabel() {
+		if(userRating > 0) {
+			lblUserRating.setText(String.valueOf(userRating));
+			lblUserRating.setFont(new Font("Arial", Font.PLAIN, 30));
+		} else {
+			lblUserRating.setText("<html>Rate<br/>This</html>");
+			lblUserRating.setFont(new Font("Arial", Font.PLAIN, 15));
+		}
+	}
+	private JLabel getLblCancel() {
+		if (lblCancel == null) {
+			lblCancel = new JLabel("");
+			lblCancel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					userRating = 0;
+					try {
+						Controller.getInstance().deleteUserRating(movie);
+						fillStars();
+						colorUserRatingStar();
+						fillUserRatingLabel();
+						lblRatedOrNot.setText("");
+					} catch (Exception e1) {
+						System.out.println(e1.getMessage());
+					}
+				}
+			});
+			lblCancel.setHorizontalAlignment(SwingConstants.LEFT);
+			lblCancel.setIcon(new ImageIcon(cancel));
+			lblCancel.setBounds(795, 425, 28, 33);
+		}
+		return lblCancel;
 	}
 }

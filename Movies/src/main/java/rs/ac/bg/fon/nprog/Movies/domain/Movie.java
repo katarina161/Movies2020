@@ -263,7 +263,7 @@ public class Movie {
 	 */
 	public double calculateRating(int userRating) {
 		double input = (rating * reviews + userRating) * 1.0 / (reviews + 1);
-		BigDecimal bd = new BigDecimal(input).setScale(2, RoundingMode.HALF_UP);
+		BigDecimal bd = new BigDecimal(input).setScale(1, RoundingMode.HALF_UP);
 		
 		double r = bd.doubleValue();
 		
