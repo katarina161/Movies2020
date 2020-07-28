@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -26,7 +27,7 @@ public class FMovie extends JFrame {
 	final Image userGoldStar = new ImageIcon(this.getClass().getResource("/icons/userGoldStar.png")).getImage();
 	
 	private Movie movie;
-	private int userRating = 8;
+	private int userRating = 0;
 	
 	private JPanel contentPane;
 	private JLabel lblTitle;
@@ -50,8 +51,13 @@ public class FMovie extends JFrame {
 	private JLabel lblUserRatingStar;
 	private JLabel lblUserRating;
 	private JLabel lblRatedOrNot;
+	private JSeparator separator;
 	
 	JLabel stars[] = new JLabel[10];
+	private JPanel panel;
+	private JLabel lblRating;
+	private JLabel lblReviews;
+	private JLabel label_1;
 	/**
 	 * Create the frame.
 	 */
@@ -62,6 +68,11 @@ public class FMovie extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 841, 661);
 		contentPane = new JPanel();
+		separator = new JSeparator();
+		separator.setSize(1, 50);
+		separator.setLocation(540, 469);
+		separator.setBackground(Color.LIGHT_GRAY);
+		separator.setOrientation(SwingConstants.VERTICAL);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -74,18 +85,10 @@ public class FMovie extends JFrame {
 		contentPane.add(getLblYear());
 		contentPane.add(getLblGenres());
 		contentPane.add(getLblDuration());
-		contentPane.add(getLblStar1());
-		contentPane.add(getLblStar2());
-		contentPane.add(getLblStar3());
-		contentPane.add(getLblStar4());
-		contentPane.add(getLblStar5());
-		contentPane.add(getLblStar6());
-		contentPane.add(getLblStar7());
-		contentPane.add(getLblStar8());
-		contentPane.add(getLblStar9());
-		contentPane.add(getLblStar10());
+		contentPane.add(getPanel());
 		contentPane.add(getLblUserRatingStar());
 		contentPane.add(getLblUserRating());
+		contentPane.add(separator);
 		contentPane.add(getLblRatedOrNot());
 		
 		stars[0] = getLblStar1();
@@ -98,6 +101,9 @@ public class FMovie extends JFrame {
 		stars[7] = getLblStar8();
 		stars[8] = getLblStar9();
 		stars[9] = getLblStar10();
+		contentPane.add(getLblRating());
+		contentPane.add(getLblReviews());
+		contentPane.add(getLabel_1());
 		fillStars();
 		
 //		for (JLabel jLabel : stars) {
@@ -206,6 +212,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar1() {
 		if (lblStar1 == null) {
 			lblStar1 = new JLabel("");
+			lblStar1.setBounds(12, 7, 26, 26);
 			lblStar1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -213,16 +220,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(1);
+					colorStarsBlack();
 				}
 			});
-			lblStar1.setBounds(455, 419, 26, 26);
 		}
 		return lblStar1;
 	}
 	private JLabel getLblStar2() {
 		if (lblStar2 == null) {
 			lblStar2 = new JLabel("");
+			lblStar2.setBounds(45, 7, 26, 26);
 			lblStar2.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -230,16 +237,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(2);
+					colorStarsBlack();
 				}
 			});
-			lblStar2.setBounds(488, 419, 26, 26);
 		}
 		return lblStar2;
 	}
 	private JLabel getLblStar3() {
 		if (lblStar3 == null) {
 			lblStar3 = new JLabel("");
+			lblStar3.setBounds(78, 7, 26, 26);
 			lblStar3.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -247,16 +254,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(3);
+					colorStarsBlack();
 				}
 			});
-			lblStar3.setBounds(521, 419, 26, 26);
 		}
 		return lblStar3;
 	}
 	private JLabel getLblStar4() {
 		if (lblStar4 == null) {
 			lblStar4 = new JLabel("");
+			lblStar4.setBounds(111, 7, 26, 26);
 			lblStar4.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -264,16 +271,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(4);
+					colorStarsBlack();
 				}
 			});
-			lblStar4.setBounds(554, 419, 26, 26);
 		}
 		return lblStar4;
 	}
 	private JLabel getLblStar5() {
 		if (lblStar5 == null) {
 			lblStar5 = new JLabel("");
+			lblStar5.setBounds(144, 7, 26, 26);
 			lblStar5.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -281,16 +288,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(5);
+					colorStarsBlack();
 				}
 			});
-			lblStar5.setBounds(587, 419, 26, 26);
 		}
 		return lblStar5;
 	}
 	private JLabel getLblStar6() {
 		if (lblStar6 == null) {
 			lblStar6 = new JLabel("");
+			lblStar6.setBounds(177, 7, 26, 26);
 			lblStar6.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -298,16 +305,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(6);
+					colorStarsBlack();
 				}
 			});
-			lblStar6.setBounds(623, 419, 26, 26);
 		}
 		return lblStar6;
 	}
 	private JLabel getLblStar7() {
 		if (lblStar7 == null) {
 			lblStar7 = new JLabel("");
+			lblStar7.setBounds(210, 7, 26, 26);
 			lblStar7.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -315,16 +322,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(7);
+					colorStarsBlack();
 				}
 			});
-			lblStar7.setBounds(656, 419, 26, 26);
 		}
 		return lblStar7;
 	}
 	private JLabel getLblStar8() {
 		if (lblStar8 == null) {
 			lblStar8 = new JLabel("");
+			lblStar8.setBounds(243, 7, 26, 26);
 			lblStar8.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -332,16 +339,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(8);
+					colorStarsBlack();
 				}
 			});
-			lblStar8.setBounds(689, 419, 26, 26);
 		}
 		return lblStar8;
 	}
 	private JLabel getLblStar9() {
 		if (lblStar9 == null) {
 			lblStar9 = new JLabel("");
+			lblStar9.setBounds(276, 7, 26, 26);
 			lblStar9.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -349,16 +356,16 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(9);
+					colorStarsBlack();
 				}
 			});
-			lblStar9.setBounds(722, 419, 26, 26);
 		}
 		return lblStar9;
 	}
 	private JLabel getLblStar10() {
 		if (lblStar10 == null) {
 			lblStar10 = new JLabel("");
+			lblStar10.setBounds(309, 7, 26, 26);
 			lblStar10.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -366,24 +373,25 @@ public class FMovie extends JFrame {
 				}
 				@Override
 				public void mouseExited(MouseEvent e) {
-					colorStarsBlack(10);
+					colorStarsBlack();
 				}
 			});
-			lblStar10.setBounds(755, 419, 26, 26);
 		}
 		return lblStar10;
 	}
 	
 	public void colorStarsGold(int numberOfStars) {
+		colorStarsBlack();
 		for(int i = 1; i <= numberOfStars; i++) {
 			stars[i-1].setIcon(new ImageIcon(goldStar));
 		}
 	}
 	
-	public void colorStarsBlack(int numberOfStars) {
-		for(int i = numberOfStars; i > 0; i--) {
-			stars[i-1].setIcon(new ImageIcon(blackStar));
+	public void colorStarsBlack() {
+		for(JLabel label : stars) {
+			label.setIcon(new ImageIcon(blackStar));
 		}
+		
 	}
 	
 	public void fillStars() {
@@ -418,7 +426,7 @@ public class FMovie extends JFrame {
 				lblUserRating.setText("<html>Rate<br/>This</html>");
 			}
 			lblUserRating.setHorizontalAlignment(SwingConstants.LEFT);
-			lblUserRating.setBounds(498, 469, 50, 33);
+			lblUserRating.setBounds(498, 469, 36, 32);
 		}
 		return lblUserRating;
 	}
@@ -428,8 +436,63 @@ public class FMovie extends JFrame {
 			lblRatedOrNot.setFont(new Font("Arial", Font.PLAIN, 15));
 			if(userRating > 0)
 				lblRatedOrNot.setText("You");
-			lblRatedOrNot.setBounds(498, 503, 50, 16);
+			lblRatedOrNot.setBounds(498, 503, 36, 16);
 		}
 		return lblRatedOrNot;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setBackground(Color.WHITE);
+			panel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					
+				}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					fillStars();
+				}
+			});
+			panel.setBounds(447, 420, 344, 40);
+			panel.setLayout(null);
+			panel.add(getLblStar1());
+			panel.add(getLblStar2());
+			panel.add(getLblStar3());
+			panel.add(getLblStar4());
+			panel.add(getLblStar5());
+			panel.add(getLblStar6());
+			panel.add(getLblStar7());
+			panel.add(getLblStar8());
+			panel.add(getLblStar9());
+			panel.add(getLblStar10());
+		}
+		return panel;
+	}
+	private JLabel getLblRating() {
+		if (lblRating == null) {
+			lblRating = new JLabel("");
+			lblRating.setText(String.valueOf(movie.getRating()));
+			lblRating.setHorizontalAlignment(SwingConstants.RIGHT);
+			lblRating.setFont(new Font("Arial", Font.PLAIN, 30));
+			lblRating.setBounds(562, 473, 46, 33);
+		}
+		return lblRating;
+	}
+	private JLabel getLblReviews() {
+		if (lblReviews == null) {
+			lblReviews = new JLabel("");
+			lblReviews.setText(String.valueOf(movie.getReviews()));
+			lblReviews.setBounds(562, 510, 74, 16);
+		}
+		return lblReviews;
+	}
+	private JLabel getLabel_1() {
+		if (label_1 == null) {
+			label_1 = new JLabel("/10");
+			label_1.setFont(new Font("Arial", Font.PLAIN, 15));
+			label_1.setBounds(611, 489, 28, 16);
+		}
+		return label_1;
 	}
 }
