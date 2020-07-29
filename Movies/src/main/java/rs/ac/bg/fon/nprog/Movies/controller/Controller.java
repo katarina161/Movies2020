@@ -78,17 +78,24 @@ public class Controller {
 
 	public void deleteUserRating(Movie movie) throws Exception{
 		if(movie == null)
-			throw new RuntimeException("Rating for this movie does not exist!");
+			throw new RuntimeException("This movie does not exist!");
 		User user = (User)map.get("currentUser");
 		serviceMovie.deleteUserRating(user, movie);
 	}
 
 	public int getUserRating(Movie movie) throws Exception{
 		if(movie == null)
-			throw new RuntimeException("Rating for this movie does not exist!");
+			throw new RuntimeException("This movie does not exist!");
 		User user = (User)map.get("currentUser");
 		return serviceMovie.getUserRating(user, movie);
 	}
 
+	public double getRating(Long movieId) throws Exception {
+		return serviceMovie.getRating(movieId);
+	}
+
+	public int getReviews(Long movieId) throws Exception{
+		return serviceMovie.getRevies(movieId);
+	}
 
 }

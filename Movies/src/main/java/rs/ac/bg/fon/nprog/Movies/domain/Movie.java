@@ -261,8 +261,44 @@ public class Movie {
 	 * 
 	 * @return Nova vrednost ocene filma.
 	 */
-	public double calculateRating(int userRating) {
+	public double calculateRatingPlus(int userRating) {
 		double input = (rating * reviews + userRating) * 1.0 / (reviews + 1);
+		BigDecimal bd = new BigDecimal(input).setScale(1, RoundingMode.HALF_UP);
+		
+		double r = bd.doubleValue();
+		
+		return r;
+	}
+	
+	/**
+	 * Metoda koja racuna prosecnu ocenu nakon uklonjene ocene korisnika.
+	 * 
+	 * @param userRating ocena korisnika
+	 * 
+	 * @return Nova vrednost ocene filma.
+	 */
+	public double calculateRatingMinus(int userRating) {
+		if(reviews == 1)
+			return 0;
+		double input = (rating * reviews - userRating) * 1.0 / (reviews - 1);
+		BigDecimal bd = new BigDecimal(input).setScale(1, RoundingMode.HALF_UP);
+		
+		double r = bd.doubleValue();
+		
+		return r;
+	}
+	
+	/**
+	 * Metoda koja racuna prosecnu ocenu nakon promene ocene korisnika.
+	 * 
+	 * @param oldUserRating stara ocena korisnika
+	 * @param newUserRating nova ocena korisnika
+	 * 
+	 * @return Nova vrednost ocene filma.
+	 */
+	public double calculateRatingChange(int oldUserRating, int newUserRating) {
+		double input = (rating * reviews - oldUserRating + newUserRating) * 1.0 / reviews;
+		
 		BigDecimal bd = new BigDecimal(input).setScale(1, RoundingMode.HALF_UP);
 		
 		double r = bd.doubleValue();

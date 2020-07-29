@@ -18,4 +18,8 @@ public interface ServiceMovie {
 
 	public int getUserRating(User user, Movie movie) throws Exception;
 
+	public double getRating(Long movieId) throws Exception;
+
+	public int getRevies(Long movieId) throws Exception;
+
 }

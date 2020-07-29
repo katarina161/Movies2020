@@ -85,7 +85,7 @@ public class MovieTest {
 		
 		int userRating = 5;
 		
-		assertEquals(5.0, movie.calculateRating(userRating), 0);
+		assertEquals(5.0, movie.calculateRatingPlus(userRating), 0);
 	}
 	
 	@Test
@@ -95,7 +95,37 @@ public class MovieTest {
 		
 		int userRating = 8;
 		
-		assertEquals(9.19, movie.calculateRating(userRating), 0);
+		assertEquals(9.2, movie.calculateRatingPlus(userRating), 0);
 	}
-
+	
+	@Test
+	public void testCalculateRatingMinus1() {
+		movie.setRating(9.2);
+		movie.setReviews(150);
+		
+		int userRating = 8;
+		
+		assertEquals(9.2, movie.calculateRatingMinus(userRating), 0);
+	}
+	
+	@Test
+	public void testCalculateRatingMinus2() {
+		movie.setRating(8);
+		movie.setReviews(1);
+		
+		int userRating = 8;
+		
+		assertEquals(0, movie.calculateRatingMinus(userRating), 0);
+	}
+	
+	@Test
+	public void testCalculateRatingChange1() {
+		movie.setRating(9.2);
+		movie.setReviews(150);
+		
+		int oldUserRating = 8;
+		int newUserRating = 1;
+		
+		assertEquals(9.2, movie.calculateRatingChange(oldUserRating, newUserRating), 0);
+	}
 }

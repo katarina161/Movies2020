@@ -18,4 +18,8 @@ public interface StorageMovie {
 
 	int getUserRating(User user, Movie movie) throws Exception;
 
+	double getRating(Long movieId) throws Exception;
+
+	int getReviews(Long movieId) throws Exception;
+
 }

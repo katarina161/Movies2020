@@ -68,6 +68,7 @@ public class FMovie extends JFrame {
 		this.movie = movie;
 		try {
 			userRating = Controller.getInstance().getUserRating(movie);
+			movie.setReviews(Controller.getInstance().getReviews(movie.getId()));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -137,8 +138,10 @@ public class FMovie extends JFrame {
 		if (lblCoverImage == null) {
 			lblCoverImage = new JLabel("");
 			lblCoverImage.setHorizontalAlignment(SwingConstants.CENTER);
-			Image img = new ImageIcon(this.getClass().getResource("/covers/" +movie.getImage())).getImage().getScaledInstance(310, 440, Image.SCALE_DEFAULT);
-			lblCoverImage.setIcon(new ImageIcon(img));
+			if(movie.getImage() != null) {
+				Image img = new ImageIcon(this.getClass().getResource("/covers/" +movie.getImage())).getImage().getScaledInstance(310, 440, Image.SCALE_DEFAULT);
+				lblCoverImage.setIcon(new ImageIcon(img));
+			}
 			lblCoverImage.setBounds(39, 100, 360, 480);
 //			Border pictureBorder = BorderFactory.createRaisedBevelBorder();
 //			lblCoverImage.setBorder(pictureBorder);
@@ -247,7 +250,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar2() {
 		if (lblStar2 == null) {
 			lblStar2 = new JLabel("");
-			lblStar2.setBounds(45, 7, 26, 26);
+			lblStar2.setBounds(38, 7, 26, 26);
 			lblStar2.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -275,7 +278,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar3() {
 		if (lblStar3 == null) {
 			lblStar3 = new JLabel("");
-			lblStar3.setBounds(78, 7, 26, 26);
+			lblStar3.setBounds(64, 7, 26, 26);
 			lblStar3.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -303,7 +306,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar4() {
 		if (lblStar4 == null) {
 			lblStar4 = new JLabel("");
-			lblStar4.setBounds(111, 7, 26, 26);
+			lblStar4.setBounds(90, 7, 26, 26);
 			lblStar4.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -331,7 +334,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar5() {
 		if (lblStar5 == null) {
 			lblStar5 = new JLabel("");
-			lblStar5.setBounds(144, 7, 26, 26);
+			lblStar5.setBounds(116, 7, 26, 26);
 			lblStar5.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -359,7 +362,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar6() {
 		if (lblStar6 == null) {
 			lblStar6 = new JLabel("");
-			lblStar6.setBounds(177, 7, 26, 26);
+			lblStar6.setBounds(142, 7, 26, 26);
 			lblStar6.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -387,7 +390,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar7() {
 		if (lblStar7 == null) {
 			lblStar7 = new JLabel("");
-			lblStar7.setBounds(210, 7, 26, 26);
+			lblStar7.setBounds(168, 7, 26, 26);
 			lblStar7.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -415,7 +418,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar8() {
 		if (lblStar8 == null) {
 			lblStar8 = new JLabel("");
-			lblStar8.setBounds(243, 7, 26, 26);
+			lblStar8.setBounds(194, 7, 26, 26);
 			lblStar8.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -443,7 +446,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar9() {
 		if (lblStar9 == null) {
 			lblStar9 = new JLabel("");
-			lblStar9.setBounds(276, 7, 26, 26);
+			lblStar9.setBounds(220, 7, 26, 26);
 			lblStar9.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -471,7 +474,7 @@ public class FMovie extends JFrame {
 	private JLabel getLblStar10() {
 		if (lblStar10 == null) {
 			lblStar10 = new JLabel("");
-			lblStar10.setBounds(309, 7, 26, 26);
+			lblStar10.setBounds(246, 7, 26, 26);
 			lblStar10.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -559,9 +562,11 @@ public class FMovie extends JFrame {
 					lblUserRating.setText(String.valueOf(userRating));
 					colorUserRatingStar();
 					fillUserRatingLabel();
+					showRating();
+					showReviews();
 				}
 			});
-			panel.setBounds(447, 420, 344, 40);
+			panel.setBounds(450, 420, 285, 40);
 			panel.setLayout(null);
 			panel.add(getLblStar1());
 			panel.add(getLblStar2());
@@ -579,9 +584,8 @@ public class FMovie extends JFrame {
 	private JLabel getLblRating() {
 		if (lblRating == null) {
 			lblRating = new JLabel("");
-			lblRating.setText(String.valueOf(movie.getRating()));
+			showRating();
 			lblRating.setHorizontalAlignment(SwingConstants.RIGHT);
-			lblRating.setFont(new Font("Arial", Font.PLAIN, 30));
 			lblRating.setBounds(564, 469, 46, 33);
 		}
 		return lblRating;
@@ -591,7 +595,7 @@ public class FMovie extends JFrame {
 			lblReviews = new JLabel("");
 			lblReviews.setForeground(Color.GRAY);
 			lblReviews.setFont(new Font("Arial", Font.PLAIN, 15));
-			lblReviews.setText(String.valueOf(movie.getReviews()));
+			showReviews();
 			lblReviews.setBounds(572, 501, 74, 16);
 		}
 		return lblReviews;
@@ -623,18 +627,43 @@ public class FMovie extends JFrame {
 			lblUserRating.setFont(new Font("Arial", Font.PLAIN, 15));
 		}
 	}
+	
+	public void showRating() {
+		double setRating = getMovieRating();
+		int intPart = (int)setRating;
+		String print;
+		if(setRating - intPart == 0)
+			print = String.valueOf(intPart);
+		else
+			print = String.valueOf(setRating);
+		if(setRating == 0) {
+			lblRating.setText("<html>No<br/>Rating</html>");
+			lblRating.setFont(new Font("Arial", Font.PLAIN, 15));
+		} else {
+			lblRating.setText(print);
+			lblRating.setFont(new Font("Arial", Font.PLAIN, 30));
+		}
+	}
+	
+	public void showReviews() {
+		int reviews = getMovieReviews();
+		lblReviews.setText(String.valueOf(reviews));
+	}
+	
 	private JLabel getLblCancel() {
 		if (lblCancel == null) {
 			lblCancel = new JLabel("");
 			lblCancel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					userRating = 0;
 					try {
 						Controller.getInstance().deleteUserRating(movie);
+						userRating = 0;
 						fillStars();
 						colorUserRatingStar();
 						fillUserRatingLabel();
+						showRating();
+						showReviews();
 						lblRatedOrNot.setText("");
 					} catch (Exception e1) {
 						System.out.println(e1.getMessage());
@@ -643,8 +672,34 @@ public class FMovie extends JFrame {
 			});
 			lblCancel.setHorizontalAlignment(SwingConstants.LEFT);
 			lblCancel.setIcon(new ImageIcon(cancel));
-			lblCancel.setBounds(795, 425, 28, 33);
+			lblCancel.setBounds(737, 425, 28, 33);
 		}
 		return lblCancel;
+	}
+	
+	private double getMovieRating() {
+		try {
+			double rating = Controller.getInstance().getRating(movie.getId());
+			movie.setRating(rating);
+			
+			return movie.getRating();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return movie.getRating();
+	}
+	
+	private int getMovieReviews() {
+		try {
+			int reviews = Controller.getInstance().getReviews(movie.getId());
+			movie.setReviews(reviews);
+			
+			return movie.getReviews();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return movie.getReviews();
 	}
 }

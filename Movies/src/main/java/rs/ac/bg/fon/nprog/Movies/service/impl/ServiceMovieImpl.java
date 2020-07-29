@@ -48,4 +48,14 @@ public class ServiceMovieImpl implements ServiceMovie{
 		return storageMovie.getUserRating(user, movie);
 	}
 
+	@Override
+	public double getRating(Long movieId) throws Exception {
+		return storageMovie.getRating(movieId);
+	}
+
+	@Override
+	public int getRevies(Long movieId) throws Exception {
+		return storageMovie.getReviews(movieId);
+	}
+
 }

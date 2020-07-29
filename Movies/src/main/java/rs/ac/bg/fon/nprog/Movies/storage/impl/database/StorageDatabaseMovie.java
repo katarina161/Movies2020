@@ -106,11 +106,23 @@ public class StorageDatabaseMovie implements StorageMovie{
 
 	@Override
 	public void saveUserRating(User user, Movie movie, int userRating) throws Exception {
+		int oldUserRating = getUserRating(user, movie);
+		int oldReviews = getReviews(movie.getId());
+		int newReviews;
+		double newRating;
 		try {
-			if(getUserRating(user, movie) == 0)
+			if(getUserRating(user, movie) == 0) {
+				newRating = movie.calculateRatingPlus(userRating);
+				newReviews = oldReviews + 1;
+				updateRating(movie, newRating);
+				updateReviews(movie, newReviews);
 				insertUserRating(user, movie, userRating);
-			else
+			}
+			else {
+				newRating = movie.calculateRatingChange(oldUserRating, userRating);
+				updateRating(movie, newRating);
 				updateUserRating(user, movie, userRating);
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -120,6 +132,13 @@ public class StorageDatabaseMovie implements StorageMovie{
 	@Override
 	public void deleteUserRating(User user, Movie movie) throws Exception {
 		try {
+			int userRating = getUserRating(user, movie);
+			double newRating = movie.calculateRatingMinus(userRating);
+			int oldReviews = getReviews(movie.getId());
+			int newReviews = oldReviews >= 1 ? (oldReviews - 1) : 0;
+			updateRating(movie, newRating);
+			updateReviews(movie, newReviews);
+			
 			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "DELETE FROM review WHERE user_id=? AND movie_id=?";
 			
@@ -199,6 +218,93 @@ public class StorageDatabaseMovie implements StorageMovie{
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+
+	public void updateRating(Movie movie, double newRating) throws Exception {
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "UPDATE movie SET rating=? WHERE id=?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setDouble(1, newRating);
+			preparedStatement.setLong(2, movie.getId());
+			
+			preparedStatement.executeUpdate();
+			connection.commit();
+			
+			preparedStatement.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void updateReviews(Movie movie, int newReviews) {
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "UPDATE movie SET reviews=? WHERE id=?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setDouble(1, newReviews);
+			preparedStatement.setLong(2, movie.getId());
+			
+			preparedStatement.executeUpdate();
+			connection.commit();
+			
+			preparedStatement.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+
+	@Override
+	public double getRating(Long movieId) throws Exception {
+		double rating = 0;
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "SELECT rating FROM movie WHERE id=?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, movieId);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next())
+				rating = rs.getDouble("rating");
+			
+			rs.close();
+			preparedStatement.close();
+			return rating;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return rating;
+	}
+
+
+	@Override
+	public int getReviews(Long movieId) throws Exception {
+		int reviews= 0;
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "SELECT reviews FROM movie WHERE id=?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, movieId);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next())
+				reviews = rs.getInt("reviews");
+			
+			rs.close();
+			preparedStatement.close();
+			return reviews;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return reviews;
 	}
 
 }
