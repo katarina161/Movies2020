@@ -22,4 +22,10 @@ public interface ServiceMovie {
 
 	public int getRevies(Long movieId) throws Exception;
 
+	public void addToWatchList(Movie movie, User user) throws Exception;
+
+	public boolean findMovieInWatchlist(User user, Movie movie) throws Exception;
+
+	public void removeFromWatchlist(User user, Movie movie) throws Exception;
+
 }

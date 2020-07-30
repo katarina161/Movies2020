@@ -98,4 +98,21 @@ public class Controller {
 		return serviceMovie.getRevies(movieId);
 	}
 
+	public void addToWatchList(Movie movie) throws Exception{
+		if(movie == null)
+			throw new RuntimeException("This movie does not exist!");
+		User user = (User)map.get("currentUser");
+		serviceMovie.addToWatchList(movie, user);
+	}
+
+	public boolean findMovieInWatchlist(Movie movie) throws Exception{
+		User user = (User)map.get("currentUser");
+		return serviceMovie.findMovieInWatchlist(user, movie);
+	}
+
+	public void removeFromWatchList(Movie movie) throws Exception{
+		User user = (User)map.get("currentUser");
+		serviceMovie.removeFromWatchlist(user, movie);
+	}
+
 }

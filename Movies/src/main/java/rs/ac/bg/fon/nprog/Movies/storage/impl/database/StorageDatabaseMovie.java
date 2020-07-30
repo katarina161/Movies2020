@@ -307,4 +307,68 @@ public class StorageDatabaseMovie implements StorageMovie{
 		return reviews;
 	}
 
+
+	@Override
+	public void addToWatchlist(Movie movie, User user) throws Exception {
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "INSERT INTO watchlist (user_id, movie_id) VALUES (?,?)";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, user.getId());
+			preparedStatement.setLong(2, movie.getId());
+			
+			preparedStatement.executeUpdate();
+			
+			connection.commit();
+			preparedStatement.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+
+	@Override
+	public boolean findMovieInWatchlist(User user, Movie movie) throws Exception {
+		boolean exist = false;
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "SELECT * FROM watchlist WHERE user_id=? AND movie_id=?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, user.getId());
+			preparedStatement.setLong(2, movie.getId());
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next())
+				exist = true;
+			
+			preparedStatement.close();
+			return exist;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return exist;
+	}
+
+
+	@Override
+	public void removeFromWatchlist(User user, Movie movie) throws Exception {
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "DELETE FROM watchlist WHERE user_id=? AND movie_id=?";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, user.getId());
+			preparedStatement.setLong(2, movie.getId());
+			
+			preparedStatement.executeUpdate();
+			connection.commit();
+			
+			preparedStatement.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 }

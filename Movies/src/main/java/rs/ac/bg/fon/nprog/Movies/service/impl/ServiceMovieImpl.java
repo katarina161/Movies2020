@@ -58,4 +58,19 @@ public class ServiceMovieImpl implements ServiceMovie{
 		return storageMovie.getReviews(movieId);
 	}
 
+	@Override
+	public void addToWatchList(Movie movie, User user) throws Exception {
+		storageMovie.addToWatchlist(movie, user);
+	}
+
+	@Override
+	public boolean findMovieInWatchlist(User user, Movie movie) throws Exception {
+		return storageMovie.findMovieInWatchlist(user, movie);
+	}
+
+	@Override
+	public void removeFromWatchlist(User user, Movie movie) throws Exception {
+		storageMovie.removeFromWatchlist(user, movie);
+	}
+
 }

@@ -22,4 +22,10 @@ public interface StorageMovie {
 
 	int getReviews(Long movieId) throws Exception;
 
+	void addToWatchlist(Movie movie, User user) throws Exception;
+
+	boolean findMovieInWatchlist(User user, Movie movie) throws Exception;
+
+	void removeFromWatchlist(User user, Movie movie) throws Exception;
+
 }

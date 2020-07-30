@@ -27,9 +27,13 @@ public class FMovie extends JFrame {
 	final Image userBlackStar = new ImageIcon(this.getClass().getResource("/icons/userBlackStar.png")).getImage();
 	final Image userGoldStar = new ImageIcon(this.getClass().getResource("/icons/userGoldStar.png")).getImage();
 	final Image cancel = new ImageIcon(this.getClass().getResource("/icons/cancel.png")).getImage();
+	final Image watchlist = new ImageIcon(this.getClass().getResource("/icons/addToWatchlist.png")).getImage();
+	final Image removeFromWatchlist = new ImageIcon(this.getClass().getResource("/icons/tick1.png")).getImage();
 	
 	private Movie movie;
 	private int userRating;
+	private boolean isInWatchlist;
+	private String addOrRemove;
 	
 	private JPanel contentPane;
 	private JLabel lblTitle;
@@ -61,6 +65,7 @@ public class FMovie extends JFrame {
 	private JLabel lblReviews;
 	private JLabel label_1;
 	private JLabel lblCancel;
+	private JLabel lblWatchlist;
 	/**
 	 * Create the frame.
 	 */
@@ -116,6 +121,7 @@ public class FMovie extends JFrame {
 		contentPane.add(getLblReviews());
 		contentPane.add(getLabel_1());
 		contentPane.add(getLblCancel());
+		contentPane.add(getLblWatchlist());
 		fillStars();
 		
 		setLocationRelativeTo(null);
@@ -701,5 +707,50 @@ public class FMovie extends JFrame {
 		}
 		
 		return movie.getReviews();
+	}
+	private JLabel getLblWatchlist() {
+		if (lblWatchlist == null) {
+			lblWatchlist = new JLabel("");
+			editWatchlistIcon();
+			lblWatchlist.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					addOrRemoveFromWatchList();
+					editWatchlistIcon();
+				}
+			});
+			lblWatchlist.setBounds(661, 470, 51, 51);
+		}
+		return lblWatchlist;
+	}
+	
+	private void editWatchlistIcon() {
+		try {
+			isInWatchlist = Controller.getInstance().findMovieInWatchlist(movie);
+			if(!isInWatchlist) {
+				lblWatchlist.setIcon(new ImageIcon(watchlist));
+				lblWatchlist.setToolTipText("Click to add to watchlist");
+				addOrRemove = "add";
+			}
+			else {
+				lblWatchlist.setIcon(new ImageIcon(removeFromWatchlist));
+				lblWatchlist.setToolTipText("Click to remove from watchlist");
+				addOrRemove = "remove";
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	private void addOrRemoveFromWatchList() {
+		try {
+			if(addOrRemove.equals("add")) {
+				Controller.getInstance().addToWatchList(movie);
+			} else if(addOrRemove.equals("remove")) {
+				Controller.getInstance().removeFromWatchList(movie);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
