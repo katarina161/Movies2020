@@ -28,4 +28,8 @@ public interface StorageMovie {
 
 	void removeFromWatchlist(User user, Movie movie) throws Exception;
 
+	List<Movie> getSpecificGenreWatchlist(Genre searchGenre, User user) throws Exception;
+
+	List<Movie> getAllFromWatchlist(User user) throws Exception;
+
 }

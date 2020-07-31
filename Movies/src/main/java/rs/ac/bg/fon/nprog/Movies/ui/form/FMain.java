@@ -34,6 +34,8 @@ import rs.ac.bg.fon.nprog.Movies.ui.component.table.model.MovieTableModel;
 @SuppressWarnings("serial")
 public class FMain extends JFrame {
 	
+	private FMain thisFrame;
+	
 	private JPanel contentPane;
 	private JPanel sidePane;
 	private JTable jtblMovies;
@@ -46,11 +48,15 @@ public class FMain extends JFrame {
 	private JButton btnAllMovies;
 	private User currentUser;
 	private JLabel lblLogOut;
-
+	private JButton btnYourWatchlist;
+	
+	private boolean seeWatchlist;
+	
 	/**
 	 * Create the frame.
 	 */
 	public FMain() {
+		thisFrame = this;
 		currentUser = (User) Controller.getInstance().getMap().get("currentUser");
 		setTitle(currentUser.getUsername());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,11 +75,13 @@ public class FMain extends JFrame {
 		sidePane.add(getCbGenres());
 		sidePane.add(getBtnAllMovies());
 		sidePane.add(getBtnDetails());
+		sidePane.add(getBtnYourWatchlist());
 //		sidePane.add(getLblLogOut());
 		
 		setLocationRelativeTo(null);
 		movies = new ArrayList<Movie>();
 		testActionListener = true;
+		seeWatchlist = false;
 		
 		fillComboGenres();
 		fillForm();
@@ -133,7 +141,7 @@ public class FMain extends JFrame {
 					} else {
 						MovieTableModel tm = (MovieTableModel) jtblMovies.getModel();
 						Movie movie = tm.getMovie(selectedRow);
-						new FMovie(movie).setVisible(true);
+						new FMovie(movie, thisFrame).setVisible(true);
 					}
 				}
 			});
@@ -180,6 +188,7 @@ public class FMain extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					testActionListener = false;
 					cbGenres.setSelectedIndex(-1);
+					seeWatchlist = false;
 					testActionListener = true;
 					
 					fillForm();
@@ -223,9 +232,16 @@ public class FMain extends JFrame {
 		try {
 			if(cbGenres.getSelectedIndex() != (-1)) {
 				Genre searchGenre = (Genre) cbGenres.getSelectedItem();
-				movies = Controller.getInstance().getSpecificGenre(searchGenre);
-			} else 
-				movies = Controller.getInstance().getAllMovies();
+				if(seeWatchlist) {
+					movies = Controller.getInstance().getSpecificGenreWatchlist(searchGenre);
+				} else
+					movies = Controller.getInstance().getSpecificGenre(searchGenre);
+			} else {
+				if(seeWatchlist) {
+					movies = Controller.getInstance().getAllFromWatchlist();
+				} else
+					movies = Controller.getInstance().getAllMovies();
+			}
 			
 			for(Movie m : movies) {
 				List<Genre> genres = Controller.getInstance().findMovieGenres(m.getId());
@@ -237,7 +253,31 @@ public class FMain extends JFrame {
 			jtblMovies.getColumnModel().getColumn(1).setPreferredWidth(7);
 			jtblMovies.getColumnModel().getColumn(2).setPreferredWidth(300);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			if(e.getMessage().equals("Empty watchlist")) {
+				seeWatchlist = false;
+				JOptionPane.showMessageDialog(null, "Your watchlist is empty!");
+				fillForm();
+			} else
+				System.out.println(e.getMessage());
 		}
+	}
+	private JButton getBtnYourWatchlist() {
+		if (btnYourWatchlist == null) {
+			btnYourWatchlist = new JButton();
+			btnYourWatchlist.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					seeWatchlist = true;
+					fillForm();
+				}
+			});
+			btnYourWatchlist.setToolTipText("");
+			btnYourWatchlist.setText("Your Watchlist");
+			btnYourWatchlist.setForeground(new Color(244, 37, 37));
+			btnYourWatchlist.setFont(new Font("Arial", Font.PLAIN, 18));
+			btnYourWatchlist.setBackground(Color.WHITE);
+			btnYourWatchlist.setBounds(35, 166, 253, 31);
+		}
+		return btnYourWatchlist;
 	}
 }

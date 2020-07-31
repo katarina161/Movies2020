@@ -28,4 +28,8 @@ public interface ServiceMovie {
 
 	public void removeFromWatchlist(User user, Movie movie) throws Exception;
 
+	public List<Movie> getSpecificGenreWatchlist(Genre searchGenre, User user) throws Exception;
+
+	public List<Movie> getAllFromWatchlist(User user) throws Exception;
+
 }

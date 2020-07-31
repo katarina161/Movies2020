@@ -115,4 +115,14 @@ public class Controller {
 		serviceMovie.removeFromWatchlist(user, movie);
 	}
 
+	public List<Movie> getSpecificGenreWatchlist(Genre searchGenre) throws Exception{
+		User user = (User)map.get("currentUser");
+		return serviceMovie.getSpecificGenreWatchlist(searchGenre, user);
+	}
+
+	public List<Movie> getAllFromWatchlist() throws Exception{
+		User user = (User)map.get("currentUser");
+		return serviceMovie.getAllFromWatchlist(user);
+	}
+
 }

@@ -37,7 +37,7 @@ public class FLogIn extends JFrame {
 	private JLabel lblImage;
 	private JRootPane rootPane;
 	ImageIcon img;
-
+	
 	/**
 	 * Create the frame.
 	 */

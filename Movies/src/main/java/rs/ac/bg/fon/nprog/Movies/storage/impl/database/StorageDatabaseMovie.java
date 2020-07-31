@@ -58,7 +58,58 @@ public class StorageDatabaseMovie implements StorageMovie{
 		return movies;
 	}
 
+	@Override
+	public List<Movie> getAllFromWatchlist(User user) throws Exception {
+		List<Movie> movies = new ArrayList<Movie>();
+		
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
+					+ "WHERE id IN (SELECT movie_id FROM watchlist WHERE user_id=?)";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, user.getId());
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			if(!rs.isBeforeFirst())
+				throw new RuntimeException("Empty watchlist");
+			
+			while(rs.next()) {
+				Long id = rs.getLong("id");
+				String title  = rs.getString("title");
+				int year = rs.getInt("year");
+				int duration = rs.getInt("duration");
+				double rating = rs.getDouble("rating");
+				int reviews = rs.getInt("reviews");
+				String image = rs.getString("image");
+				
+				Movie movie = new Movie();
+				movie.setId(id);
+				movie.setTitle(title);
+				movie.setYear(year);
+				movie.setDuration(duration);
+				movie.setRating(rating);
+				movie.setReviews(reviews);
+				movie.setImage(image);
+				
+				movies.add(movie);
+			}
+			
+			rs.close();
+			preparedStatement.close();
+			
+			return movies;
+		} catch (Exception e) {
+			if(e.getMessage().equals("Empty watchlist"))
+				throw e;
+			System.out.println(e.getMessage());
+		}
+		
+		return movies;
+	}
 
+	
 	@Override
 	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception {
 		List<Movie> movies = new ArrayList<>();
@@ -70,6 +121,52 @@ public class StorageDatabaseMovie implements StorageMovie{
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setLong(1, searchGenre.getId());
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			while(rs.next()) {
+				Long id = rs.getLong("id");
+				String title  = rs.getString("title");
+				int year = rs.getInt("year");
+				int duration = rs.getInt("duration");
+				double rating = rs.getDouble("rating");
+				int reviews = rs.getInt("reviews");
+				String image = rs.getString("image");
+				
+				Movie movie = new Movie();
+				movie.setId(id);
+				movie.setTitle(title);
+				movie.setYear(year);
+				movie.setDuration(duration);
+				movie.setRating(rating);
+				movie.setReviews(reviews);
+				movie.setImage(image);
+				
+				movies.add(movie);
+			}
+			
+			rs.close();
+			preparedStatement.close();
+			
+			return movies;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return movies;
+	}
+	
+	@Override
+	public List<Movie> getSpecificGenreWatchlist(Genre searchGenre, User user) throws Exception {
+		List<Movie> movies = new ArrayList<>();
+		
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
+			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
+					+ "WHERE id IN (SELECT movie_id FROM movie_genre WHERE genre_id=?) "
+					+ "AND id IN (SELECT movie_id FROM watchlist WHERE user_id=?)";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setLong(1, searchGenre.getId());
+			preparedStatement.setLong(2, user.getId());
 			
 			ResultSet rs = preparedStatement.executeQuery();
 			while(rs.next()) {
@@ -370,5 +467,6 @@ public class StorageDatabaseMovie implements StorageMovie{
 			System.out.println(e.getMessage());
 		}
 	}
+
 
 }

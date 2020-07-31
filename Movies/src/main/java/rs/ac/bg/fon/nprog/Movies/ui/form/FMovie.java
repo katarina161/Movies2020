@@ -21,7 +21,7 @@ import rs.ac.bg.fon.nprog.Movies.domain.Movie;
 
 @SuppressWarnings("serial")
 public class FMovie extends JFrame {
-
+	
 	final Image blackStar = new ImageIcon(this.getClass().getResource("/icons/blackStar1.png")).getImage();
 	final Image goldStar = new ImageIcon(this.getClass().getResource("/icons/goldStar1.png")).getImage();
 	final Image userBlackStar = new ImageIcon(this.getClass().getResource("/icons/userBlackStar.png")).getImage();
@@ -66,10 +66,13 @@ public class FMovie extends JFrame {
 	private JLabel label_1;
 	private JLabel lblCancel;
 	private JLabel lblWatchlist;
+
+	private FMain parent;
 	/**
 	 * Create the frame.
 	 */
-	public FMovie(Movie movie) {
+	public FMovie(Movie movie, FMain parent) {
+		this.parent = parent;
 		this.movie = movie;
 		try {
 			userRating = Controller.getInstance().getUserRating(movie);
@@ -748,6 +751,7 @@ public class FMovie extends JFrame {
 				Controller.getInstance().addToWatchList(movie);
 			} else if(addOrRemove.equals("remove")) {
 				Controller.getInstance().removeFromWatchList(movie);
+				parent.fillForm();
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

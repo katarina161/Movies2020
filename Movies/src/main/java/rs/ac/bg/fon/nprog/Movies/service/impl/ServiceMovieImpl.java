@@ -73,4 +73,14 @@ public class ServiceMovieImpl implements ServiceMovie{
 		storageMovie.removeFromWatchlist(user, movie);
 	}
 
+	@Override
+	public List<Movie> getSpecificGenreWatchlist(Genre searchGenre, User user) throws Exception {
+		return storageMovie.getSpecificGenreWatchlist(searchGenre, user);
+	}
+
+	@Override
+	public List<Movie> getAllFromWatchlist(User user) throws Exception {
+		return storageMovie.getAllFromWatchlist(user);
+	}
+
 }
