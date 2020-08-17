@@ -11,7 +11,7 @@ public class Genre {
 	/**
 	 * id zanra
 	 */
-	private Long id;
+	private transient Long id;
 	
 	/**
 	 * naziv zanra

@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Klasa predstvalja film koji sadrzi atribute:
  * <ul>
@@ -26,7 +28,7 @@ public class Movie {
 	/**
 	 * id filma
 	 */
-	private Long id;
+	private transient Long id;
 	
 	/**
 	 * naziv filma
@@ -36,6 +38,7 @@ public class Movie {
 	/**
 	 * godina izlaska filma
 	 */
+	@SerializedName("releaseYear")
 	private int year;
 	
 	/**
@@ -51,6 +54,7 @@ public class Movie {
 	/**
 	 * broj glasova
 	 */
+	@SerializedName("numberOfReviews")
 	private int reviews;
 	
 	/**
@@ -61,7 +65,7 @@ public class Movie {
 	/**
 	 * naziv slike filma
 	 */
-	private String image;
+	private transient String image;
 
 	
 	/**

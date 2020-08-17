@@ -32,4 +32,6 @@ public interface ServiceMovie {
 
 	public List<Movie> getAllFromWatchlist(User user) throws Exception;
 
+	public void generateJSON() throws Exception;
+
 }

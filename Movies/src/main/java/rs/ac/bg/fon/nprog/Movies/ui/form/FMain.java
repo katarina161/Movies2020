@@ -51,6 +51,7 @@ public class FMain extends JFrame {
 	private JButton btnYourWatchlist;
 	
 	private boolean seeWatchlist;
+	private JLabel lblJSON;
 	
 	/**
 	 * Create the frame.
@@ -76,6 +77,7 @@ public class FMain extends JFrame {
 		sidePane.add(getBtnAllMovies());
 		sidePane.add(getBtnDetails());
 		sidePane.add(getBtnYourWatchlist());
+		sidePane.add(getLblJSON());
 //		sidePane.add(getLblLogOut());
 		
 		setLocationRelativeTo(null);
@@ -243,11 +245,6 @@ public class FMain extends JFrame {
 					movies = Controller.getInstance().getAllMovies();
 			}
 			
-			for(Movie m : movies) {
-				List<Genre> genres = Controller.getInstance().findMovieGenres(m.getId());
-				m.setGenres(genres);
-			}
-			
 			jtblMovies.setModel(new MovieTableModel(movies));
 			jtblMovies.getColumnModel().getColumn(0).setPreferredWidth(150);
 			jtblMovies.getColumnModel().getColumn(1).setPreferredWidth(7);
@@ -279,5 +276,27 @@ public class FMain extends JFrame {
 			btnYourWatchlist.setBounds(35, 166, 253, 31);
 		}
 		return btnYourWatchlist;
+	}
+	private JLabel getLblJSON() {
+		if (lblJSON == null) {
+			lblJSON = new JLabel("");
+			lblJSON.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					try {
+						Controller.getInstance().generateJSON();
+						JOptionPane.showMessageDialog(
+								null, "JSON file successfully generated!", "JSON", JOptionPane.INFORMATION_MESSAGE);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}
+			});
+			lblJSON.setBounds(35, 210, 67, 67);
+			lblJSON.setToolTipText("Generate JSON file");
+			Image img = new ImageIcon(this.getClass().getResource("/icons/jsonIcon.png")).getImage();
+			lblJSON.setIcon(new ImageIcon(img));
+		}
+		return lblJSON;
 	}
 }

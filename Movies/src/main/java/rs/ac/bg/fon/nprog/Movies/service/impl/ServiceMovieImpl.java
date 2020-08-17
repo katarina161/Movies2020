@@ -1,6 +1,11 @@
 package rs.ac.bg.fon.nprog.Movies.service.impl;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import rs.ac.bg.fon.nprog.Movies.domain.Genre;
 import rs.ac.bg.fon.nprog.Movies.domain.Movie;
@@ -81,6 +86,19 @@ public class ServiceMovieImpl implements ServiceMovie{
 	@Override
 	public List<Movie> getAllFromWatchlist(User user) throws Exception {
 		return storageMovie.getAllFromWatchlist(user);
+	}
+
+	@Override
+	public void generateJSON() throws Exception {
+		List<Movie> movies = storageMovie.getAll();
+		
+		try(FileWriter out = new FileWriter("movies.json")) {
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			
+			gson.toJson(movies, out);
+		} catch (IOException e) {
+			throw e;
+		}
 	}
 
 }

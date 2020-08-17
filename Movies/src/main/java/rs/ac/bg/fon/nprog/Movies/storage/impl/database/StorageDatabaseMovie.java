@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import rs.ac.bg.fon.nprog.Movies.controller.Controller;
 import rs.ac.bg.fon.nprog.Movies.database.connection.ConnectionFactory;
 import rs.ac.bg.fon.nprog.Movies.domain.Genre;
 import rs.ac.bg.fon.nprog.Movies.domain.Movie;
@@ -43,6 +44,9 @@ public class StorageDatabaseMovie implements StorageMovie{
 				movie.setRating(rating);
 				movie.setReviews(reviews);
 				movie.setImage(image);
+				
+				List<Genre> genres = Controller.getInstance().findMovieGenres(id);
+				movie.setGenres(genres);
 				
 				movies.add(movie);
 			}
@@ -93,6 +97,9 @@ public class StorageDatabaseMovie implements StorageMovie{
 				movie.setReviews(reviews);
 				movie.setImage(image);
 				
+				List<Genre> genres = Controller.getInstance().findMovieGenres(id);
+				movie.setGenres(genres);
+				
 				movies.add(movie);
 			}
 			
@@ -141,6 +148,9 @@ public class StorageDatabaseMovie implements StorageMovie{
 				movie.setReviews(reviews);
 				movie.setImage(image);
 				
+				List<Genre> genres = Controller.getInstance().findMovieGenres(id);
+				movie.setGenres(genres);
+				
 				movies.add(movie);
 			}
 			
@@ -186,6 +196,9 @@ public class StorageDatabaseMovie implements StorageMovie{
 				movie.setRating(rating);
 				movie.setReviews(reviews);
 				movie.setImage(image);
+				
+				List<Genre> genres = Controller.getInstance().findMovieGenres(id);
+				movie.setGenres(genres);
 				
 				movies.add(movie);
 			}

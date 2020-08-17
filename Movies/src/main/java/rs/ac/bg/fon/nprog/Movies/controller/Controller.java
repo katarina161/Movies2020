@@ -125,4 +125,8 @@ public class Controller {
 		return serviceMovie.getAllFromWatchlist(user);
 	}
 
+	public void generateJSON() throws Exception{
+		serviceMovie.generateJSON();
+	}
+
 }
