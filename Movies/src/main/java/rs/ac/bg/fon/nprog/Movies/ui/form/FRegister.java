@@ -481,7 +481,7 @@ public class FRegister extends JDialog {
 			try {
 				user.setFirstName(firstName);
 			} catch (Exception e) {
-				messages.put("firstNameErr", "<html>Only letters are allowed.<br/>It must starts with upper letter.</html>");
+				messages.put("firstNameErr", "<html>Only letters are allowed.<br/>It has to start with an upper letter.</html>");
 				errors++;
 			}
 		}
@@ -495,7 +495,7 @@ public class FRegister extends JDialog {
 				user.setLastName(lastName);
 			} catch (Exception e) {
 				messages.put("lastNameErr",
-						"<html>Only letters, space, ' and - are allowed<br/>It must starts with upper letter.</html>");
+						"<html>Only letters, spaces, ' and - are allowed<br/>It has to start with an upper letter.</html>");
 				errors++;
 			}
 		}
@@ -514,7 +514,7 @@ public class FRegister extends JDialog {
 				user.setUsername(username);
 			} catch (Exception e) {
 				messages.put("usernameErr",
-						"<html>Only letters, numbers and _ are allowed.<br/>It must starts with a letter</html>");
+						"<html>Only letters, numbers and _ are allowed.<br/>It has to start with a letter.</html>");
 				errors++;
 			}
 		}
