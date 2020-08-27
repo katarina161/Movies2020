@@ -9,8 +9,8 @@ public class ConnectionFactory {
 	private Connection connection;
 	private static ConnectionFactory instance;
 	
-	private ConnectionFactory() throws SQLException {
-		String url = "jdbc:mysql://localhost:3306/movies";
+	private ConnectionFactory(String dbName) throws SQLException {
+		String url = "jdbc:mysql://localhost:3306/" + dbName;
 		String username = "root";
 		String passwod = "";
 		
@@ -22,9 +22,9 @@ public class ConnectionFactory {
 		}
 	}
 	
-	public static ConnectionFactory getInstance() throws SQLException {
+	public static ConnectionFactory getInstance(String dbName) throws SQLException {
 		if (instance == null)
-			instance = new ConnectionFactory();
+			instance = new ConnectionFactory(dbName);
 		
 		return instance;
 	}

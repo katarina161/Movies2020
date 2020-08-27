@@ -18,7 +18,7 @@ public class StorageDatabaseGenre implements StorageGenre{
 		List<Genre> genres = new ArrayList<Genre>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance().getConnection();
+			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
 			String query = "SELECT id,name FROM genre";
 			
 			Statement statement = connection.createStatement();
@@ -51,7 +51,7 @@ public class StorageDatabaseGenre implements StorageGenre{
 		List<Genre> genres =  new ArrayList<>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance().getConnection();
+			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
 			String query = "SELECT id,name FROM genre WHERE id IN (SELECT genre_id FROM movie_genre WHERE movie_id=?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);

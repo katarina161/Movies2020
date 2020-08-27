@@ -13,7 +13,7 @@ public class StorageDatabaseUser implements StorageUser {
 
 	@Override
 	public User login(String username, String password) throws Exception {
-		Connection connection = ConnectionFactory.getInstance().getConnection();
+		Connection connection = ConnectionFactory.getInstance("movies").getConnection();
 		
 		String query = "SELECT * FROM user WHERE username=? AND password=?";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -47,7 +47,7 @@ public class StorageDatabaseUser implements StorageUser {
 		if(findUser(user))
 			throw new RuntimeException("That username is already taken.");
 		
-		Connection connection = ConnectionFactory.getInstance().getConnection();
+		Connection connection = ConnectionFactory.getInstance("movies").getConnection();
 		String query = "INSERT INTO user (username,password,firstname,lastname,gender,birthday) VALUES (?,?,?,?,?,?)";
 		
 		PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -71,7 +71,7 @@ public class StorageDatabaseUser implements StorageUser {
 	}
 	
 	public boolean findUser(User user) throws Exception {
-		Connection connection = ConnectionFactory.getInstance().getConnection();
+		Connection connection = ConnectionFactory.getInstance("movies").getConnection();
 		String query = "SELECT id FROM user WHERE username=?";
 		
 		PreparedStatement preparedStatement = connection.prepareStatement(query);

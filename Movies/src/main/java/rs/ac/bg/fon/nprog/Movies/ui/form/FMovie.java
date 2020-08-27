@@ -749,6 +749,7 @@ public class FMovie extends JFrame {
 		try {
 			if(addOrRemove.equals("add")) {
 				Controller.getInstance().addToWatchList(movie);
+				parent.fillForm();
 			} else if(addOrRemove.equals("remove")) {
 				Controller.getInstance().removeFromWatchList(movie);
 				parent.fillForm();
