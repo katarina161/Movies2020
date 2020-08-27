@@ -4,27 +4,28 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import rs.ac.bg.fon.nprog.Movies.configuration.Configuration;
+
 public class ConnectionFactory {
 	
 	private Connection connection;
 	private static ConnectionFactory instance;
+	String url = "";
+	String user = "root";
+	String password = "";
 	
-	private ConnectionFactory(String dbName) throws SQLException {
-		String url = "jdbc:mysql://localhost:3306/" + dbName;
-		String username = "root";
-		String passwod = "";
+	private ConnectionFactory() throws SQLException {
+		url = Configuration.getInstance().getUrl();
+		user = Configuration.getInstance().getUsername();
+		password = Configuration.getInstance().getPassword();
 		
-		try {
-			connection = DriverManager.getConnection(url, username, passwod);
-			connection.setAutoCommit(false);
-		} catch (SQLException e) {
-			throw new SQLException("Connection is not created");
-		}
+		connection = DriverManager.getConnection(url, user, password);
+		connection.setAutoCommit(false);
 	}
 	
-	public static ConnectionFactory getInstance(String dbName) throws SQLException {
-		if (instance == null)
-			instance = new ConnectionFactory(dbName);
+	public static ConnectionFactory getInstance() throws SQLException {
+		if(instance == null)
+			instance = new ConnectionFactory();
 		
 		return instance;
 	}
@@ -32,5 +33,20 @@ public class ConnectionFactory {
 	public Connection getConnection() {
 		return connection;
 	}
-
+	
+	public void setUrl(String url) {
+		this.url = url;
+		setUrlConnection();
+	}
+	
+	public void setUrlConnection() {
+		try {
+			connection.close();
+			connection = DriverManager.getConnection(url, user, password);
+			connection.setAutoCommit(false);
+		} catch (Exception e) {
+			e.printStackTrace();	
+		}
+	}
+	
 }

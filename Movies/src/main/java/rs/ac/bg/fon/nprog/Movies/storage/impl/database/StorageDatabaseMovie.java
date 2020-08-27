@@ -21,7 +21,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 		List<Movie> movies = new ArrayList<Movie>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie";
 			
 			Statement statement = connection.createStatement();
@@ -67,7 +67,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 		List<Movie> movies = new ArrayList<Movie>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
 					+ "WHERE id IN (SELECT movie_id FROM watchlist WHERE user_id=?)";
 			
@@ -122,7 +122,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 		List<Movie> movies = new ArrayList<>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
 					+ "WHERE id IN (SELECT movie_id FROM movie_genre WHERE genre_id=?)";
 			
@@ -169,7 +169,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 		List<Movie> movies = new ArrayList<>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
 					+ "WHERE id IN (SELECT movie_id FROM movie_genre WHERE genre_id=?) "
 					+ "AND id IN (SELECT movie_id FROM watchlist WHERE user_id=?)";
@@ -249,7 +249,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 			updateRating(movie, newRating);
 			updateReviews(movie, newReviews);
 			
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "DELETE FROM review WHERE user_id=? AND movie_id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -271,7 +271,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	public int getUserRating(User user, Movie movie) throws Exception {
 		int userRating = 0;
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT rating FROM review WHERE user_id=? AND movie_id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -294,7 +294,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	
 	public void insertUserRating(User user, Movie movie, int userRating) throws Exception {
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "INSERT INTO review (user_id, movie_id, rating) VALUES (?,?,?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -313,7 +313,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	
 	public void updateUserRating(User user, Movie movie, int userRating) throws Exception {
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "UPDATE review SET rating=? WHERE user_id=? AND movie_id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -333,7 +333,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 
 	public void updateRating(Movie movie, double newRating) throws Exception {
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "UPDATE movie SET rating=? WHERE id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -351,7 +351,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	
 	public void updateReviews(Movie movie, int newReviews) {
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "UPDATE movie SET reviews=? WHERE id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -372,7 +372,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	public double getRating(Long movieId) throws Exception {
 		double rating = 0;
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT rating FROM movie WHERE id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -397,7 +397,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	public int getReviews(Long movieId) throws Exception {
 		int reviews= 0;
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT reviews FROM movie WHERE id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -421,7 +421,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	@Override
 	public void addToWatchlist(Movie movie, User user) throws Exception {
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "INSERT INTO watchlist (user_id, movie_id) VALUES (?,?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -442,7 +442,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	public boolean findMovieInWatchlist(User user, Movie movie) throws Exception {
 		boolean exist = false;
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT * FROM watchlist WHERE user_id=? AND movie_id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -465,7 +465,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 	@Override
 	public void removeFromWatchlist(User user, Movie movie) throws Exception {
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "DELETE FROM watchlist WHERE user_id=? AND movie_id=?";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -479,6 +479,43 @@ public class StorageDatabaseMovie implements StorageMovie{
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	@Override
+	public Movie findMovieById(Long id) throws Exception {
+		Movie movie = null;
+		Connection connection = ConnectionFactory.getInstance().getConnection();
+		String query = "SELECT * FROM movie WHERE id=?";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setLong(1, id);
+		
+		ResultSet rs = preparedStatement.executeQuery();
+		
+		if(!rs.isBeforeFirst())
+			throw new RuntimeException("That movie does not exist in the database!");
+		
+		if(rs.next()) {
+			String title  = rs.getString("title");
+			int year = rs.getInt("year");
+			int duration = rs.getInt("duration");
+			double rating = rs.getDouble("rating");
+			int reviews = rs.getInt("reviews");
+			String image = rs.getString("image");
+			
+			movie = new Movie();
+			movie.setId(id);
+			movie.setTitle(title);
+			movie.setYear(year);
+			movie.setDuration(duration);
+			movie.setRating(rating);
+			movie.setReviews(reviews);
+			movie.setImage(image);
+		}
+		
+		preparedStatement.close();
+		
+		return movie;
 	}
 
 

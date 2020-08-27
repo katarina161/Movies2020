@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -15,13 +17,15 @@ import org.junit.Test;
 import rs.ac.bg.fon.nprog.Movies.configuration.Configuration;
 import rs.ac.bg.fon.nprog.Movies.controller.Controller;
 import rs.ac.bg.fon.nprog.Movies.database.connection.ConnectionFactory;
-import rs.ac.bg.fon.nprog.Movies.domain.User;
+import rs.ac.bg.fon.nprog.Movies.domain.Genre;
 
-public class StorageDatabaseUserTest {
+public class StorageDatabaseGenreTest {
 	private static Connection connection;
 	private static Controller controller;
-	User user;
-//
+	
+	List<Genre> allGenres;
+	List<Genre> movieGenres;
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		String url = "jdbc:mysql://localhost:3306/moviestest";
@@ -44,7 +48,8 @@ public class StorageDatabaseUserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		user = new User();
+		allGenres = new ArrayList<Genre>();
+		movieGenres = new ArrayList<Genre>();
 		
 		String query = "INSERT INTO user (username,password,firstname,lastname,gender,birthday) "
 				+ "VALUES ('katarina96','Kaca1234.','Katarina','Novakovic','Female','22-08-1996')";
@@ -57,8 +62,6 @@ public class StorageDatabaseUserTest {
 
 	@After
 	public void tearDown() throws Exception {
-		user = null;
-		
 		String query = "DELETE FROM user";
 		Statement statement = connection.createStatement();
 		statement.executeUpdate(query);
@@ -68,51 +71,23 @@ public class StorageDatabaseUserTest {
 	}
 
 	@Test
-	public void testLogin() {
-		String username = "katarina96";
-		String password = "Kaca1234.";
+	public void testGetAll() {
+		allGenres = controller.getAllGenres();
 		
-		try {
-			controller.login(username, password);
-			user = (User) controller.getMap().get("currentUser");
-			assertEquals(user.getUsername(), username);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Test (expected = java.lang.Exception.class)
-	public void testLoginNoUser() throws Exception {
-		String username = "katarina_1";
-		String password = "Kaca1234.";
-		
-		controller.login(username, password);
+		assertEquals(16, allGenres.size());
 	}
 
 	@Test
-	public void testRegistrate() throws Exception {
-		user.setFirstName("Sava");
-		user.setLastName("Savanovic");
-		user.setGender("Male");
-		user.setUsername("sava99");
-		user.setPassword("Sava1234.");
-		user.setBirthday("27-08-2020");
+	public void testFindGenres() throws Exception {
+		movieGenres = controller.findMovieGenres((long) 3);
 		
-		controller.registrate(user);
-		controller.login(user.getUsername(), user.getPassword());
-		User currentUser = (User) controller.getMap().get("currentUser");
-		assertEquals(user.getUsername(), currentUser.getUsername());
+		assertEquals("Crime", movieGenres.get(0).getName());
+		assertEquals("Drama", movieGenres.get(1).getName());
 	}
 	
 	@Test (expected = java.lang.Exception.class)
-	public void testRegistrateUserExist() throws Exception {
-		user.setFirstName("Katarina");
-		user.setLastName("Novakovic");
-		user.setGender("Female");
-		user.setUsername("katarina96");
-		user.setPassword("Kaca1234.");
-		user.setBirthday("22-08-1996");
-		
-		controller.registrate(user);
+	public void testFindGenresNoSuchMovie() throws Exception {
+		movieGenres = controller.findMovieGenres((long) 100);
 	}
+
 }

@@ -50,6 +50,10 @@ public class Controller {
 		return map;
 	}
 
+	public Movie findMovieById(Long id) throws Exception {
+		return serviceMovie.findMovieById(id);
+	}
+	
 	public List<Movie> getAllMovies() throws Exception {
 		return serviceMovie.getAll();
 	}
@@ -58,7 +62,7 @@ public class Controller {
 		return serviceGenre.findGenres(id);
 	}
 
-	public List<Genre> getAllGenres() throws Exception {
+	public List<Genre> getAllGenres() {
 		return serviceGenre.getAll();
 	}
 

@@ -108,4 +108,6 @@ public interface StorageMovie {
 	 */
 	List<Movie> getAllFromWatchlist(User user) throws Exception;
 
+	Movie findMovieById(Long id) throws Exception;
+
 }

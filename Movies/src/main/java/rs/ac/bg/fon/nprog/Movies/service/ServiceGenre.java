@@ -6,7 +6,7 @@ import rs.ac.bg.fon.nprog.Movies.domain.Genre;
 
 public interface ServiceGenre {
 
-	List<Genre> getAll() throws Exception;
+	List<Genre> getAll();
 	
 	public List<Genre> findGenres(Long id) throws Exception;
 

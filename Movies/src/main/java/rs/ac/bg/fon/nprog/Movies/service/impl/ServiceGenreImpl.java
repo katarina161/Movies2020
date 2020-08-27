@@ -16,12 +16,12 @@ public class ServiceGenreImpl implements ServiceGenre{
 	}
 
 	@Override
-	public List<Genre> getAll() throws Exception {
+	public List<Genre> getAll() {
 		return storageGenre.getAll();
 	}
 
 	@Override
-	public List<Genre> findGenres(Long id) throws Exception {
+	public List<Genre> findGenres(Long id) throws Exception{
 		return storageGenre.findGenres(id);
 	}
 }

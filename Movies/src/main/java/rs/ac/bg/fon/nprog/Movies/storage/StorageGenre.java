@@ -11,7 +11,7 @@ public interface StorageGenre {
 	 * @return Lista svih zanrova iz baze
 	 * @throws Exception
 	 */
-	List<Genre> getAll() throws Exception;
+	List<Genre> getAll();
 	
 	/**
 	 * Pronalazi zanrove odredjenog filma.

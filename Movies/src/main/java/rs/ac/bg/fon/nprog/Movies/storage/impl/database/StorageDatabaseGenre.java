@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import rs.ac.bg.fon.nprog.Movies.controller.Controller;
 import rs.ac.bg.fon.nprog.Movies.database.connection.ConnectionFactory;
 import rs.ac.bg.fon.nprog.Movies.domain.Genre;
 import rs.ac.bg.fon.nprog.Movies.storage.StorageGenre;
@@ -14,11 +15,11 @@ import rs.ac.bg.fon.nprog.Movies.storage.StorageGenre;
 public class StorageDatabaseGenre implements StorageGenre{
 
 	@Override
-	public List<Genre> getAll() throws Exception {
+	public List<Genre> getAll() {
 		List<Genre> genres = new ArrayList<Genre>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id,name FROM genre";
 			
 			Statement statement = connection.createStatement();
@@ -51,7 +52,13 @@ public class StorageDatabaseGenre implements StorageGenre{
 		List<Genre> genres =  new ArrayList<>();
 		
 		try {
-			Connection connection = ConnectionFactory.getInstance("movies").getConnection();
+			Controller.getInstance().findMovieById(movieId);
+		} catch (Exception e1) {
+			throw e1;
+		}
+		
+		try {
+			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id,name FROM genre WHERE id IN (SELECT genre_id FROM movie_genre WHERE movie_id=?)";
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(query);

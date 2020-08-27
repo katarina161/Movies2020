@@ -34,4 +34,6 @@ public interface ServiceMovie {
 
 	public void generateJSON() throws Exception;
 
+	public Movie findMovieById(Long id) throws Exception;
+
 }

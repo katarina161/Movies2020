@@ -101,4 +101,9 @@ public class ServiceMovieImpl implements ServiceMovie{
 		}
 	}
 
+	@Override
+	public Movie findMovieById(Long id) throws Exception {
+		return storageMovie.findMovieById(id);
+	}
+
 }
