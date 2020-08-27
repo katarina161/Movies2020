@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,24 +49,12 @@ public class StorageDatabaseGenreTest {
 	public void setUp() throws Exception {
 		allGenres = new ArrayList<Genre>();
 		movieGenres = new ArrayList<Genre>();
-		
-		String query = "INSERT INTO user (username,password,firstname,lastname,gender,birthday) "
-				+ "VALUES ('katarina96','Kaca1234.','Katarina','Novakovic','Female','22-08-1996')";
-		Statement statement = connection.createStatement();
-		statement.executeUpdate(query);
-		
-		connection.commit();
-		statement.close();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		String query = "DELETE FROM user";
-		Statement statement = connection.createStatement();
-		statement.executeUpdate(query);
-		
-		connection.commit();
-		statement.close();
+		allGenres = null;
+		movieGenres = null;
 	}
 
 	@Test
@@ -88,6 +75,11 @@ public class StorageDatabaseGenreTest {
 	@Test (expected = java.lang.Exception.class)
 	public void testFindGenresNoSuchMovie() throws Exception {
 		movieGenres = controller.findMovieGenres((long) 100);
+	}
+	
+	@Test (expected = java.lang.Exception.class)
+	public void testFindGenresNull() throws Exception {
+		movieGenres = controller.findMovieGenres(null);
 	}
 
 }

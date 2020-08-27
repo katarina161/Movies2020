@@ -17,7 +17,7 @@ import rs.ac.bg.fon.nprog.Movies.storage.StorageMovie;
 public class StorageDatabaseMovie implements StorageMovie{
 
 	@Override
-	public List<Movie> getAll() throws Exception {
+	public List<Movie> getAll() {
 		List<Movie> movies = new ArrayList<Movie>();
 		
 		try {
@@ -130,6 +130,11 @@ public class StorageDatabaseMovie implements StorageMovie{
 			preparedStatement.setLong(1, searchGenre.getId());
 			
 			ResultSet rs = preparedStatement.executeQuery();
+			
+			if(!rs.isBeforeFirst()) {
+				throw new RuntimeException("There are no movies of that genre in the database");
+			}
+			
 			while(rs.next()) {
 				Long id = rs.getLong("id");
 				String title  = rs.getString("title");
@@ -159,6 +164,8 @@ public class StorageDatabaseMovie implements StorageMovie{
 			
 			return movies;
 		} catch (Exception e) {
+			if(e.getMessage().equals("There are no movies of that genre in the database"))
+				throw e;
 			System.out.println(e.getMessage());
 		}
 		return movies;
@@ -168,7 +175,6 @@ public class StorageDatabaseMovie implements StorageMovie{
 	public List<Movie> getSpecificGenreWatchlist(Genre searchGenre, User user) throws Exception {
 		List<Movie> movies = new ArrayList<>();
 		
-		try {
 			Connection connection = ConnectionFactory.getInstance().getConnection();
 			String query = "SELECT id, title, year, duration, rating, reviews, image FROM movie "
 					+ "WHERE id IN (SELECT movie_id FROM movie_genre WHERE genre_id=?) "
@@ -179,6 +185,9 @@ public class StorageDatabaseMovie implements StorageMovie{
 			preparedStatement.setLong(2, user.getId());
 			
 			ResultSet rs = preparedStatement.executeQuery();
+			if(!rs.isBeforeFirst())
+				throw new RuntimeException("No such genre in watchlist");
+			
 			while(rs.next()) {
 				Long id = rs.getLong("id");
 				String title  = rs.getString("title");
@@ -205,11 +214,7 @@ public class StorageDatabaseMovie implements StorageMovie{
 			
 			rs.close();
 			preparedStatement.close();
-			
-			return movies;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+
 		return movies;
 	}
 

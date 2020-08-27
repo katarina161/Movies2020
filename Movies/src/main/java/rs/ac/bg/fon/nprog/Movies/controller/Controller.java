@@ -54,11 +54,13 @@ public class Controller {
 		return serviceMovie.findMovieById(id);
 	}
 	
-	public List<Movie> getAllMovies() throws Exception {
+	public List<Movie> getAllMovies() {
 		return serviceMovie.getAll();
 	}
 
 	public List<Genre> findMovieGenres(Long id) throws Exception{
+		if(id == null)
+			throw new RuntimeException("Movie id cannot be null!");
 		return serviceGenre.findGenres(id);
 	}
 
@@ -67,6 +69,8 @@ public class Controller {
 	}
 
 	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception{
+		if(searchGenre == null)
+			throw new RuntimeException("Genre cannot be null!");
 		return serviceMovie.getSpecificGenre(searchGenre);
 	}
 
@@ -120,6 +124,8 @@ public class Controller {
 	}
 
 	public List<Movie> getSpecificGenreWatchlist(Genre searchGenre) throws Exception{
+		if(searchGenre == null)
+			throw new RuntimeException("Genre cannot be null!");
 		User user = (User)map.get("currentUser");
 		return serviceMovie.getSpecificGenreWatchlist(searchGenre, user);
 	}

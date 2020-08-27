@@ -1,6 +1,8 @@
 package rs.ac.bg.fon.nprog.Movies.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -127,5 +129,63 @@ public class MovieTest {
 		int newUserRating = 1;
 		
 		assertEquals(9.2, movie.calculateRatingChange(oldUserRating, newUserRating), 0);
+	}
+	
+	@Test
+	public void testEqualsFalse() {
+		movie.setId((long) 1);
+		movie.setTitle("The Dark Knight");
+		movie.setYear(2008);
+		movie.setDuration(152);
+		movie.setRating(9);
+		movie.setReviews(37);
+		movie.setImage("theDarkKnight.jpg");
+		
+		Movie m = new Movie();
+		m.setId((long) 5);
+		m.setTitle("Seven");
+		m.setYear(1995);
+		m.setDuration(127);
+		m.setRating(8.6);
+		m.setReviews(77);
+		m.setImage("seven.jpg");
+		
+		assertFalse(movie.equals(m));
+	}
+	
+	@Test
+	public void testEqualsTrue() {
+		movie.setId((long) 1);
+		movie.setTitle("The Dark Knight");
+		movie.setYear(2008);
+		movie.setDuration(152);
+		movie.setRating(9);
+		movie.setReviews(37);
+		movie.setImage("theDarkKnight.jpg");
+		
+		Movie m = new Movie();
+		m.setId((long) 1);
+		m.setTitle("The Dark Knight");
+		m.setYear(2008);
+		m.setDuration(152);
+		m.setRating(9);
+		m.setReviews(37);
+		m.setImage("theDarkKnight.jpg");
+		
+		assertTrue(movie.equals(m));
+	}
+	
+	@Test
+	public void testEqualsNull() {
+		movie.setId((long) 1);
+		movie.setTitle("The Dark Knight");
+		movie.setYear(2008);
+		movie.setDuration(152);
+		movie.setRating(9);
+		movie.setReviews(37);
+		movie.setImage("theDarkKnight.jpg");
+		
+		
+		assertFalse(movie.equals(null));
 	}
 }

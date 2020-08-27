@@ -23,7 +23,7 @@ public class ServiceMovieImpl implements ServiceMovie{
 	}
 	
 	@Override
-	public List<Movie> getAll() throws Exception {
+	public List<Movie> getAll() {
 		return storageMovie.getAll();
 	}
 

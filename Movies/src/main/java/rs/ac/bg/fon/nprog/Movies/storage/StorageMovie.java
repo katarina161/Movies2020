@@ -13,7 +13,7 @@ public interface StorageMovie {
 	 * @return Lista filmova iz baze
 	 * @throws Exception
 	 */
-	List<Movie> getAll() throws Exception;
+	List<Movie> getAll();
 
 	/**
 	 * Vraca filmove odredjenog zanra.

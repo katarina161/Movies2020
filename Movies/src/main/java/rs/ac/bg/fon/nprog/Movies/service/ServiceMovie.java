@@ -8,7 +8,7 @@ import rs.ac.bg.fon.nprog.Movies.domain.User;
 
 public interface ServiceMovie {
 	
-	public List<Movie> getAll() throws Exception;
+	public List<Movie> getAll();
 
 	public List<Movie> getSpecificGenre(Genre searchGenre) throws Exception;
 

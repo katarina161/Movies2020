@@ -310,4 +310,37 @@ public class Movie {
 		return r;
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Movie other = (Movie) obj;
+		if (duration != other.duration)
+			return false;
+		if (genres == null) {
+			if (other.genres != null)
+				return false;
+		} else if (!genres.equals(other.genres))
+			return false;
+		if (Double.doubleToLongBits(rating) != Double.doubleToLongBits(other.rating))
+			return false;
+		if (reviews != other.reviews)
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (year != other.year)
+			return false;
+		return true;
+	}
+	
+	
+
 }
